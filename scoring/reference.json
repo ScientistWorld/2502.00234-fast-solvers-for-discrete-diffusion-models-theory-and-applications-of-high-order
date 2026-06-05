@@ -7,16 +7,23 @@
       "metrics": {
         "convergence_order": {
           "higher_is_better": true,
-          "coefficient": 1.0
+          "coefficient": 1.0,
+          "description": "Estimated decay order of KL error across the scored convergence grid."
         },
         "kl_at_max_steps": {
           "higher_is_better": false,
-          "coefficient": -1.0
+          "coefficient": -1.0,
+          "description": "KL divergence from the analytic target distribution at the largest scored step budget."
         },
         "mean_kl": {
           "higher_is_better": false,
           "coefficient": -0.6,
           "description": "Mean KL over the scored step budgets, rewarding methods that improve across the convergence grid rather than only at the largest budget."
+        },
+        "mean_total_variation": {
+          "higher_is_better": false,
+          "coefficient": -0.45,
+          "description": "Mean total variation distance across the scored step budgets, catching methods that optimize KL at only one budget."
         },
         "total_variation_at_max_steps": {
           "higher_is_better": false,
@@ -28,21 +35,35 @@
           "coefficient": -0.3,
           "description": "Largest absolute state-probability error at the largest scored step budget, catching methods that hide poor tail-state behavior in aggregate KL."
         },
+        "slice_state_subset_kl_at_max_steps": {
+          "higher_is_better": false,
+          "coefficient": -0.35,
+          "description": "KL divergence on the slice-specific stratified state subset after renormalization, making state-wise overfitting visible."
+        },
+        "slice_state_subset_mass_abs_error_at_max_steps": {
+          "higher_is_better": false,
+          "coefficient": -0.25,
+          "description": "Absolute error in the total probability mass assigned to the slice-specific state subset at the largest scored step budget."
+        },
         "max_steps": {
           "higher_is_better": false,
-          "coefficient": -0.1
+          "coefficient": -0.1,
+          "description": "Largest scored discretization step count, a machine-independent compute-size constraint."
         },
         "max_nfe": {
           "higher_is_better": false,
-          "coefficient": -0.2
+          "coefficient": -0.2,
+          "description": "Largest scored number of function evaluations, penalizing extra solver work independent of wall-clock hardware."
         },
         "mean_rejection_rate": {
           "higher_is_better": false,
-          "coefficient": -0.1
+          "coefficient": -0.1,
+          "description": "Mean rejected proposal fraction over scored runs, penalizing unstable or invalid jump proposals."
         },
         "positive_intensity_fraction": {
           "higher_is_better": true,
-          "coefficient": 0.2
+          "coefficient": 0.2,
+          "description": "Mean fraction of proposed intensities that are positive, rewarding methods that preserve valid CTMC rates."
         }
       },
       "results": {

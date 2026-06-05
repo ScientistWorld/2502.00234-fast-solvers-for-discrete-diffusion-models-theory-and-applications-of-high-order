@@ -2,8 +2,9 @@
 """Held-out test-slice scoring for saved toy solver outputs.
 
 This evaluator reads the same method artifact interface as eval/train/ but
-scores odd-ranked saved step budgets.  When scoring/scores_train.json exists,
-the test slice scores exactly the method names present there.
+scores odd-ranked saved step budgets and the complementary held-out state
+subset.  When scoring/scores_train.json exists, the test slice scores exactly
+the method names present there.
 """
 
 from __future__ import annotations
@@ -19,6 +20,7 @@ from data.toy_discrete_diffusion.model import DEFAULT_TARGET, kl_divergence
 
 EXPERIMENT = "toy_15_state_convergence"
 SLICE = "test"
+STATE_INDICES = np.asarray([1, 3, 5, 7, 9, 11, 13], dtype=np.int64)
 
 
 def parse_args() -> argparse.Namespace:
@@ -84,6 +86,16 @@ def _dist(run: dict) -> np.ndarray:
     return dist / total
 
 
+def _subset_kl(target: np.ndarray, dist: np.ndarray) -> float:
+    target_subset = target[STATE_INDICES]
+    dist_subset = dist[STATE_INDICES]
+    target_mass = float(target_subset.sum())
+    dist_mass = float(dist_subset.sum())
+    if target_mass <= 0.0 or dist_mass <= 0.0:
+        raise ValueError("state subset must have positive target and predicted mass")
+    return kl_divergence(target_subset / target_mass, dist_subset / dist_mass)
+
+
 def _method_metrics(runs: list[dict]) -> dict[str, float]:
     selected_runs = _slice_runs(runs)
     kls: dict[int, float] = {}
@@ -111,13 +123,27 @@ def _method_metrics(runs: list[dict]) -> dict[str, float]:
     selected_run = next(run for run in selected_runs if int(run["steps"]) == max_steps)
     max_dist = distributions[max_steps]
     abs_error = np.abs(DEFAULT_TARGET - max_dist)
+    subset_target_mass = float(DEFAULT_TARGET[STATE_INDICES].sum())
+    subset_dist_mass = float(max_dist[STATE_INDICES].sum())
 
     metrics = {
         "convergence_order": slope,
         "kl_at_max_steps": float(kls[max_steps]),
         "mean_kl": float(np.mean([kls[s] for s in common_steps])),
+        "mean_total_variation": float(
+            np.mean(
+                [
+                    0.5 * np.sum(np.abs(DEFAULT_TARGET - distributions[s]))
+                    for s in common_steps
+                ]
+            )
+        ),
         "total_variation_at_max_steps": float(0.5 * np.sum(abs_error)),
         "worst_state_abs_error_at_max_steps": float(np.max(abs_error)),
+        "slice_state_subset_kl_at_max_steps": _subset_kl(DEFAULT_TARGET, max_dist),
+        "slice_state_subset_mass_abs_error_at_max_steps": abs(
+            subset_target_mass - subset_dist_mass
+        ),
         "max_steps": float(max_steps),
         "max_nfe": float(selected_run.get("nfe", max_steps)),
         "mean_rejection_rate": float(np.mean(rejections) if rejections else 0.0),
@@ -152,11 +178,13 @@ def main() -> None:
             "artifact_source": str(args.output_dir),
             "train_scores": str(args.train_scores),
             "split": "odd-ranked saved step budgets",
+            "state_indices": STATE_INDICES.tolist(),
         },
         "experiments": {
             EXPERIMENT: {
                 "_slice": SLICE,
                 "_split": "odd-ranked saved step budgets",
+                "_state_indices": STATE_INDICES.tolist(),
                 "results": results,
             }
         },
