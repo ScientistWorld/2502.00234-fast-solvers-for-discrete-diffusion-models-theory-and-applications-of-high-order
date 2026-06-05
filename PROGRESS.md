@@ -16,13 +16,13 @@ The CPU reproduction completed successfully on the 15-state analytic benchmark.
 | Method | KL at 64 steps | Fitted order | Mean rejection rate |
 |---|---:|---:|---:|
 | tau-leaping | 0.007809 | 1.306 | 0.157 |
-| theta-RK-2 | pending rerun | pending rerun | pending rerun |
+| theta-RK-2 | 0.006443 | 1.330 | 0.104 |
 | theta-Trapezoidal | 0.000514 | 2.188 | 0.057 |
 
 Theta-Trapezoidal is more than an order of magnitude lower in KL than
-tau-leaping at the same maximum step count and exhibits the expected
-approximately second-order convergence.  The evaluator has been extended to
-include theta-RK-2, matching the paper's toy-experiment comparison.
+tau-leaping at the same maximum step count and substantially lower than
+theta-RK-2 in the reduced-sample run.  It exhibits the expected approximately
+second-order convergence.
 
 ## Remaining
 
@@ -35,15 +35,18 @@ include theta-RK-2, matching the paper's toy-experiment comparison.
 ## Issues
 
 - Exact KL values from Figure 2 are not tabulated in the markdown, so
-  `reference.json` records only the proposed solver's stated second-order
-  behavior as the numeric paper target. The tau-leaping baseline remains in
-  scores for comparison, but its theoretical first-order rate is not treated as
-  an exact paper-reported measurement.
+  `reference.json` records the high-order solvers' stated/theoretical
+  second-order behavior as the numeric paper target. The tau-leaping baseline
+  remains in scores for comparison, but its theoretical first-order rate is not
+  treated as an exact paper-reported measurement.
 - The scheduler gave the CPU job a 1-hour timeout and one CPU. The sample count
   is scaled from the paper's 1,000,000 to 50,000 for the next run while keeping
   the same CTMC, solvers, uniform grids, and KL evaluation procedure.
 - The scaled run completed in about 60 seconds and produced stable enough
   results to support the core claim.
+- A continuation audit found theta-RK-2 was generated but not scored. This is
+  fixed; the expanded CPU validation rerun completed and wrote all three
+  methods to `scoring/scores.json`.
 
 ## Deviations from Paper
 

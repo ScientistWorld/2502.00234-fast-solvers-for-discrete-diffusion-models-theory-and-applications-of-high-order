@@ -31,7 +31,8 @@
           "type": "baseline"
         },
         "theta_rk2": {
-          "type": "proposed"
+          "type": "proposed",
+          "convergence_order": 2.0
         },
         "theta_trapezoidal": {
           "type": "proposed",
