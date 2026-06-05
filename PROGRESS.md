@@ -29,6 +29,7 @@ approximately second-order convergence.
   using RADD, MaskGIT, and LLaDA assets.
 - Optional future work: add more toy-model settings, such as theta sweeps or
   higher sample counts, if more CPU time is available.
+- The packaged environment is complete for `core_claim`.
 
 ## Issues
 
