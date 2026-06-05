@@ -2,4 +2,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim
-notes: "Core claim reproduced on the paper's analytic 15-state toy benchmark. Theta-Trapezoidal achieved KL 0.000514 at 64 steps versus tau-leaping 0.007809, with fitted convergence order 2.188 versus 1.306. Validation passes."
+notes: "Core claim reproduced on the paper's analytic 15-state toy benchmark. Scoring compares tau-leaping against theta-Trapezoidal; theta-Trapezoidal achieved KL 0.000514 at 64 steps and fitted order 2.188. python validate.py --compare passes."

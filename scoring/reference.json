@@ -28,12 +28,7 @@
       },
       "results": {
         "tau_leaping": {
-          "type": "baseline",
-          "convergence_order": 1.0
-        },
-        "theta_rk2": {
-          "type": "proposed",
-          "convergence_order": 2.0
+          "type": "baseline"
         },
         "theta_trapezoidal": {
           "type": "proposed",

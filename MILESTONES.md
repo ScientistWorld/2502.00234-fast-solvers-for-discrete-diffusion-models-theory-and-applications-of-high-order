@@ -23,6 +23,13 @@
   for tau-leaping, supporting the paper's core second-order solver claim.
 - Validation passed with `python validate.py --compare`.
 
+### [2026-06-05 03:20] - core_claim
+- Corrected `reference.json` so theoretical tau-leaping order is not treated as
+  an exact paper-reported primary-metric value.
+- Kept tau-leaping in reproduced scores as the comparison baseline and scored
+  theta-Trapezoidal as the proposed method for the core claim.
+- Re-ran `python validate.py --compare`; all checks passed.
+
 ## Stop Justification
 - Completed at milestone `core_claim`. The environment implements and scores
   the paper's core high-order solver on the paper's analytic toy benchmark.

@@ -6,6 +6,9 @@
 - Implemented tau-leaping, theta-RK-2, and theta-Trapezoidal Poisson jump solvers.
 - Implemented the paper's 15-state analytic CTMC with exact reverse rates.
 - Implemented evaluation that reads saved sampler artifacts and writes `scoring/scores.json`.
+- The scored core experiment now compares tau-leaping against theta-Trapezoidal;
+  theta-RK-2 artifacts are still generated as diagnostics but not used for the
+  core validation target.
 
 ## Results
 
@@ -14,7 +17,6 @@ The CPU reproduction completed successfully on the 15-state analytic benchmark.
 | Method | KL at 64 steps | Fitted order | Mean rejection rate |
 |---|---:|---:|---:|
 | tau-leaping | 0.007809 | 1.306 | 0.157 |
-| theta-RK-2 | 0.006443 | 1.330 | 0.104 |
 | theta-Trapezoidal | 0.000514 | 2.188 | 0.057 |
 
 Theta-Trapezoidal is more than an order of magnitude lower in KL than
@@ -31,8 +33,10 @@ approximately second-order convergence.
 ## Issues
 
 - Exact KL values from Figure 2 are not tabulated in the markdown, so
-  `reference.json` targets the paper's stated first-order and second-order
-  convergence rates rather than copied curve coordinates.
+  `reference.json` records only the proposed solver's stated second-order
+  behavior as the numeric paper target. The tau-leaping baseline remains in
+  scores for comparison, but its theoretical first-order rate is not treated as
+  an exact paper-reported measurement.
 - The scheduler gave the CPU job a 1-hour timeout and one CPU. The sample count
   is scaled from the paper's 1,000,000 to 50,000 for the next run while keeping
   the same CTMC, solvers, uniform grids, and KL evaluation procedure.
