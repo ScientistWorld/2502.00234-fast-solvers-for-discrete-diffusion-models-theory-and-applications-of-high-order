@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: false
 milestone: none
-notes: "Run the end-to-end CPU reproduction for the analytic 15-state toy experiment: tau-leaping baseline plus theta-RK-2/theta-Trapezoidal with 1e6 samples, then evaluate KL convergence."
+notes: "Retry the end-to-end CPU reproduction after fixing PYTHONPATH/package imports. Uses the same toy CTMC and paper solvers with 50k samples over 8,16,32,64 steps to fit the observed 1-hour CPU limit, then evaluates KL convergence."
