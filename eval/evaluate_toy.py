@@ -17,9 +17,6 @@ import numpy as np
 from data.toy_discrete_diffusion.model import DEFAULT_TARGET, kl_divergence
 
 
-SCORED_METHODS = {"tau_leaping", "theta_rk2", "theta_trapezoidal"}
-
-
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-dir", type=Path, default=Path("outputs/toy"))
@@ -108,7 +105,7 @@ def main() -> None:
     results = {}
     for source in (baseline_data, method_data):
         for method_name, runs in source.get("methods", {}).items():
-            if runs and method_name in SCORED_METHODS:
+            if runs:
                 results[method_name] = _method_metrics(runs)
 
     scores = {

@@ -7,8 +7,8 @@ to estimate the convergence order.
 
 Primary metric:
 
-- `convergence_order`: higher is better; the paper predicts first order for
-  tau-leaping and second order for the high-order schemes.
+- `convergence_order`: higher is better; it estimates how rapidly empirical
+  distribution error decreases as the time grid is refined.
 
 Constraint metrics:
 
@@ -17,6 +17,6 @@ Constraint metrics:
 - `max_nfe`: lower is better; this records score/intensity evaluations so
   two-stage solvers remain accountable for their larger per-step cost.
 - `mean_rejection_rate`: lower is better; multiple jumps in one categorical
-  dimension are rejected as in the paper.
+  dimension are rejected to keep each categorical update valid.
 - `positive_intensity_fraction`: higher is better; extrapolated intensities
   should remain mostly positive before clamping.

@@ -31,3 +31,8 @@
 ### [2026-06-05 03:58] - core_claim
 - Audited the main evaluator and found it lagged the train/test evaluators by omitting distribution-quality and compute-constraint metrics declared in `reference.json`.
 - Updated `eval/evaluate_toy.py` and `scripts/run.sh`; submitting a CPU test job to regenerate artifacts and refresh all score files inside the packaged container.
+
+### [2026-06-05 04:02] - core_claim
+- Final verification kept the milestone at `core_claim`.
+- Removed method-name leakage from method-agnostic docs and made the main evaluator score any method key in the artifact format.
+- Regenerated `scoring/scores.json` from saved artifacts and confirmed `python validate.py --compare` passes.

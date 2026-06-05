@@ -3,23 +3,42 @@
     "toy_15_state_convergence": {
       "results": {
         "tau_leaping": {
-          "kl_at_max_steps": 0.0078085038591555285,
-          "convergence_order": 1.3064694682233822,
+          "kl_at_max_steps": 0.007808503859155614,
+          "convergence_order": 1.3064694682233768,
+          "mean_kl": 0.05333196217136367,
+          "mean_total_variation": 0.1202672727272727,
+          "total_variation_at_max_steps": 0.04721727272727272,
+          "worst_state_abs_error_at_max_steps": 0.010832727272727258,
+          "slice_state_subset_kl_at_max_steps": 0.010401755318978155,
+          "slice_state_subset_mass_abs_error_at_max_steps": 0.007412727272727293,
           "max_steps": 64.0,
           "max_nfe": 64.0,
-          "mean_rejection_rate": 0.157330546875
+          "mean_rejection_rate": 0.157330546875,
+          "positive_intensity_fraction": 0.0
         },
         "theta_rk2": {
-          "kl_at_max_steps": 0.006442677362286515,
-          "convergence_order": 1.329807147124444,
+          "kl_at_max_steps": 0.006442677362286676,
+          "convergence_order": 1.3298071471244326,
+          "mean_kl": 0.04335233266348769,
+          "mean_total_variation": 0.10498477272727269,
+          "total_variation_at_max_steps": 0.0404272727272727,
+          "worst_state_abs_error_at_max_steps": 0.010862727272727274,
+          "slice_state_subset_kl_at_max_steps": 0.009378987345169149,
+          "slice_state_subset_mass_abs_error_at_max_steps": 0.010792727272727287,
           "max_steps": 64.0,
           "max_nfe": 128.0,
-          "mean_rejection_rate": 0.10436519531249998,
-          "positive_intensity_fraction": 0.9853403850446429
+          "mean_rejection_rate": 0.10436519531249999,
+          "positive_intensity_fraction": 0.9853403850446428
         },
         "theta_trapezoidal": {
-          "kl_at_max_steps": 0.0005137264376515751,
-          "convergence_order": 2.18795970341833,
+          "kl_at_max_steps": 0.0005137264376515756,
+          "convergence_order": 2.187959703418328,
+          "mean_kl": 0.016571380768553738,
+          "mean_total_variation": 0.055299999999999974,
+          "total_variation_at_max_steps": 0.009554545454545437,
+          "worst_state_abs_error_at_max_steps": 0.002942727272727274,
+          "slice_state_subset_kl_at_max_steps": 0.0007592151085345121,
+          "slice_state_subset_mass_abs_error_at_max_steps": 0.0003072727272727116,
           "max_steps": 64.0,
           "max_nfe": 128.0,
           "mean_rejection_rate": 0.05722140625,

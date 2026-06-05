@@ -54,9 +54,9 @@ second-order convergence.
   `scoring/scores.json` with `max_nfe`, and passed `python validate.py --compare`.
 - The main evaluator now reports the same distribution-quality, state-slice,
   positivity, and compute-constraint metrics declared in `reference.json`.
-  A CPU test job is being submitted to regenerate `outputs/toy` and refresh
-  `scoring/scores.json`, `scoring/scores_train.json`, and
-  `scoring/scores_test.json` inside the container.
+  Final verification also removed method-name leakage from method-agnostic
+  public docs and changed the main evaluator to score any method key present
+  in the saved artifact format.
 
 ## Deviations from Paper
 
