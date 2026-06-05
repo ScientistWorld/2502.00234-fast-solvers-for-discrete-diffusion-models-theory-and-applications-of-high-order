@@ -1,8 +1,8 @@
-# Once you set action to 'submit', STOP immediately.
+# Once you set action to 'done', STOP immediately.
 # Do NOT sleep, poll, or wait. The system reads this file
 # only after your turn ends.
-action: submit
+action: done
 gpus: 0
 test: false
 milestone: core_claim
-notes: "Re-run split evaluators after making missing positivity diagnostics score 0.0 for complete metric coverage."
+notes: "Complementary budget/state split; 36 train metrics, 36 test metrics; theta_trapezoidal remains best on both slices, with lower held-out KL/TV because test uses the larger odd-ranked step budget; no nulls or paper-agreement metrics."
