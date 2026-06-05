@@ -8,6 +8,13 @@
           "max_steps": 64.0,
           "mean_rejection_rate": 0.157330546875
         },
+        "theta_rk2": {
+          "kl_at_max_steps": 0.006442677362286515,
+          "convergence_order": 1.329807147124444,
+          "max_steps": 64.0,
+          "mean_rejection_rate": 0.10436519531249998,
+          "positive_intensity_fraction": 0.9853403850446429
+        },
         "theta_trapezoidal": {
           "kl_at_max_steps": 0.0005137264376515751,
           "convergence_order": 2.18795970341833,
