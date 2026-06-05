@@ -6,9 +6,8 @@
 - Implemented tau-leaping, theta-RK-2, and theta-Trapezoidal Poisson jump solvers.
 - Implemented the paper's 15-state analytic CTMC with exact reverse rates.
 - Implemented evaluation that reads saved sampler artifacts and writes `scoring/scores.json`.
-- The scored core experiment now compares tau-leaping against theta-Trapezoidal;
-  theta-RK-2 artifacts are still generated as diagnostics but not used for the
-  core validation target.
+- The scored core experiment compares tau-leaping, theta-RK-2, and
+  theta-Trapezoidal on saved artifacts.
 
 ## Results
 
@@ -17,11 +16,13 @@ The CPU reproduction completed successfully on the 15-state analytic benchmark.
 | Method | KL at 64 steps | Fitted order | Mean rejection rate |
 |---|---:|---:|---:|
 | tau-leaping | 0.007809 | 1.306 | 0.157 |
+| theta-RK-2 | pending rerun | pending rerun | pending rerun |
 | theta-Trapezoidal | 0.000514 | 2.188 | 0.057 |
 
 Theta-Trapezoidal is more than an order of magnitude lower in KL than
 tau-leaping at the same maximum step count and exhibits the expected
-approximately second-order convergence.
+approximately second-order convergence.  The evaluator has been extended to
+include theta-RK-2, matching the paper's toy-experiment comparison.
 
 ## Remaining
 

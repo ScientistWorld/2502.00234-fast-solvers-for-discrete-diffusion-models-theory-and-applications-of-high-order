@@ -1,6 +1,6 @@
 # Reproduction Milestones
 
-**Current: core_claim**
+**Current: method_runs**
 
 ## Progress Log
 
@@ -11,3 +11,7 @@
 ### [2026-06-05 03:22] - core_claim
 - Evaluated saved artifacts with method-independent code in `eval/`.
 - Reproduced the paper's central high-order claim on the analytic toy benchmark: theta-Trapezoidal fitted convergence order is 2.188 versus 1.306 for tau-leaping, with lower KL at the same 64-step budget.
+
+### [2026-06-05 03:30] - method_runs
+- Continuation audit reset the milestone to `method_runs`.
+- Found the implementation is real, but the evaluator omitted theta-RK-2 despite generating its artifacts; updated scoring to include it and submitted a CPU validation rerun.

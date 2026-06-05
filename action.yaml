@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: done
+action: submit
 gpus: 0
-test: false
-milestone: core_claim
-notes: "Core claim reproduced on the paper's analytic 15-state CTMC: theta-Trapezoidal achieves second-order convergence and lower KL than tau-leaping at the same step budget. Environment, scripts, scoring, and documentation are packaged."
+test: true
+milestone: method_runs
+notes: "CPU validation rerun after audit fix: evaluate tau-leaping, theta-RK2, and theta-Trapezoidal artifacts for the analytic 15-state CTMC and validate scoring."

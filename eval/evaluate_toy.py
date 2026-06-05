@@ -17,7 +17,7 @@ import numpy as np
 from data.toy_discrete_diffusion.model import DEFAULT_TARGET, kl_divergence
 
 
-SCORED_METHODS = {"tau_leaping", "theta_trapezoidal"}
+SCORED_METHODS = {"tau_leaping", "theta_rk2", "theta_trapezoidal"}
 
 
 def parse_args() -> argparse.Namespace:
