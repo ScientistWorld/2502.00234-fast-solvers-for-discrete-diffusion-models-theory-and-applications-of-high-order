@@ -31,8 +31,4 @@
 - Re-ran `python validate.py --compare`; all checks passed.
 
 ## Stop Justification
-- Completed at milestone `core_claim`. The environment implements and scores
-  the paper's core high-order solver on the paper's analytic toy benchmark.
-  Larger text, image, and LLM experiments remain future extensions because they
-  require large pretrained checkpoints and benchmark assets beyond the compact
-  CPU reproduction packaged here.
+- Completed at milestone `core_claim`.

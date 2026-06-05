@@ -1,0 +1,130 @@
+{
+  "paper": {
+    "arxiv_id": "2502.00234",
+    "title": "Fast Solvers for Discrete Diffusion Models: Theory and Applications of High-Order Algorithms",
+    "date": null,
+    "topics": null
+  },
+  "reproduction": {
+    "milestone": "core_claim",
+    "status": "done",
+    "error": null,
+    "scaffold": "codex",
+    "model": "gpt-5.5",
+    "profile": "gpt-5.5-medium",
+    "effort": "medium",
+    "gpu_hours_used": 0.0,
+    "current_iteration_gpu_budget": 30,
+    "current_iteration_gpu_hours_used": 0.0,
+    "total_gpu_hours_used": 0.0,
+    "current_iteration_cpu_hours_used": 0.024,
+    "total_cpu_hours_used": 0.024,
+    "gpu_budget": 30,
+    "duration_sec": 881.4,
+    "cost_usd": null,
+    "input_tokens": 4098831,
+    "output_tokens": 22519,
+    "cached_input_tokens": 3896064,
+    "cache_creation_tokens": null,
+    "reasoning_tokens": 0,
+    "total_input_tokens": 4098831,
+    "num_turns": 70,
+    "duration_api_ms": null,
+    "num_runs": 1,
+    "iteration_count": 0,
+    "workflow": "standard",
+    "workflow_step": 0,
+    "total_gpu_jobs": 2,
+    "time_breakdown": {
+      "working": 563.4391055107117,
+      "building": 0.12973976135253906,
+      "installing": 2.125915765762329,
+      "waiting": 96.10528540611267
+    }
+  },
+  "agents": [
+    {
+      "scaffold": "codex",
+      "model": "gpt-5.5",
+      "profile": "gpt-5.5-medium",
+      "effort": "medium",
+      "role": "reproducer",
+      "is_iteration": false,
+      "iteration": 1,
+      "workflow": "standard",
+      "workflow_step": 0,
+      "started_at": 1780628463.941892,
+      "finished_at": 1780629488.10322,
+      "duration_sec": 881.4,
+      "blocked_sec": 142.7,
+      "status": "done",
+      "error": null,
+      "milestone": "core_claim",
+      "gpu_budget": 30,
+      "gpu_hours_used": 0.0,
+      "total_gpu_hours_used": 0.0,
+      "cpu_hours_used": 0.024,
+      "time_breakdown": {
+        "working": 563.4391055107117,
+        "building": 0.12973976135253906,
+        "installing": 2.125915765762329,
+        "waiting": 96.10528540611267
+      },
+      "cost_usd": null,
+      "input_tokens": 4098831,
+      "output_tokens": 22519,
+      "cached_input_tokens": 3896064,
+      "cache_creation_tokens": null,
+      "reasoning_tokens": 0,
+      "total_input_tokens": 4098831,
+      "num_turns": 70,
+      "duration_api_ms": null,
+      "tool_uses": {
+        "shell": 60,
+        "file_edit": 10
+      },
+      "gpu_jobs": [
+        {
+          "run_id": "224f1a08-1d0",
+          "command": "bash /home/user/scripts/run.sh",
+          "num_gpus": 0,
+          "num_cpus": 1,
+          "resource": "gpu-cpu",
+          "hive_job_id": "a07d7dca",
+          "status": "completed",
+          "returncode": 0,
+          "duration_sec": 60.1,
+          "submitted_at": 1780629211.0817828,
+          "started_at": 1780629213.1336055,
+          "completed_at": 1780629273.190366
+        },
+        {
+          "run_id": "81910cd5-769",
+          "command": "bash /home/user/scripts/run.sh",
+          "num_gpus": 0,
+          "num_cpus": 1,
+          "resource": "gpu-cpu",
+          "hive_job_id": "1e1df0ee",
+          "status": "failed",
+          "returncode": 1,
+          "duration_sec": 27.1,
+          "submitted_at": 1780629064.2460957,
+          "started_at": 1780629065.8397622,
+          "completed_at": 1780629092.949787
+        }
+      ],
+      "progress_log": "### [2026-06-05 00:00] - none\n- Read the paper and identified the core high-order discrete diffusion solvers.\n- Implemented the analytic 15-state toy-model gym, tau-leaping baseline, theta-RK-2, theta-Trapezoidal, artifact-based evaluation, and scoring contract.\n- Local smoke execution is blocked by missing login-node `numpy`; dependency is declared in `environment/setup.sh` for the submitted container job.\n\n### [2026-06-05 00:00] - none\n- First compute job failed before sampler execution due to missing `/home/user`\n  on Python import path.\n- Added package markers, set `PYTHONPATH` in scripts, and scaled the next CPU\n  run to 50,000 samples for the observed 1-hour CPU timeout.\n\n### [2026-06-05 00:00] - core_claim\n- The end-to-end CPU reproduction completed successfully.\n- On the paper's analytic 15-state toy experiment, theta-Trapezoidal reached\n  KL 0.000514 at 64 steps versus tau-leaping KL 0.007809.\n- The fitted convergence order was 2.188 for theta-Trapezoidal versus 1.306\n  for tau-leaping, supporting the paper's core second-order solver claim.\n- Validation passed with `python validate.py --compare`."
+    }
+  ],
+  "components": {
+    "has_container": true,
+    "has_method_code": true,
+    "has_evaluation": true,
+    "has_download_script": true,
+    "has_reproduce_script": true,
+    "has_method_script": true,
+    "has_baseline": true,
+    "has_reference": true,
+    "has_data": true
+  }
+}
