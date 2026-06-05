@@ -1,8 +1,7 @@
-"""Paper samplers for finite-state discrete diffusion reverse CTMCs.
+"""Paper high-order samplers for finite-state discrete diffusion reverse CTMCs.
 
 This module implements the computational steps from Algorithms 1 and 2 of
 "Fast Solvers for Discrete Diffusion Models": theta-RK-2 and theta-Trapezoidal.
-It also includes tau-leaping as the first-order baseline used by the paper.
 """
 
 from __future__ import annotations
@@ -37,22 +36,6 @@ def _apply_poisson_channels(
         next_states[accepted] = np.argmax(counts[accepted], axis=1)
     rejection_rate = float(np.mean(jump_totals > 1))
     return next_states, rejection_rate
-
-
-def tau_leaping(
-    initial_states: np.ndarray,
-    time_grid: np.ndarray,
-    rate_fn: RateFn,
-    rng: np.random.Generator,
-) -> tuple[np.ndarray, dict[str, float]]:
-    """First-order tau-leaping update from Eq. (3.1)."""
-    states = np.asarray(initial_states, dtype=np.int64).copy()
-    rejections = []
-    for s0, s1 in zip(time_grid[:-1], time_grid[1:]):
-        rates = rate_fn(states, float(s0))
-        states, reject = _apply_poisson_channels(states, rates, float(s1 - s0), rng)
-        rejections.append(reject)
-    return states, {"rejection_rate": float(np.mean(rejections) if rejections else 0.0)}
 
 
 def theta_rk2(
@@ -116,4 +99,3 @@ def theta_trapezoidal(
         "rejection_rate": float(np.mean(rejections) if rejections else 0.0),
         "positive_intensity_fraction": float(np.mean(positive_fracs) if positive_fracs else 1.0),
     }
-

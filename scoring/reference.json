@@ -17,6 +17,10 @@
           "higher_is_better": false,
           "coefficient": -0.1
         },
+        "max_nfe": {
+          "higher_is_better": false,
+          "coefficient": -0.2
+        },
         "mean_rejection_rate": {
           "higher_is_better": false,
           "coefficient": -0.1

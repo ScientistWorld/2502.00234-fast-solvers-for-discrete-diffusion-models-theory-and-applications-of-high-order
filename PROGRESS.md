@@ -8,6 +8,8 @@
 - Implemented evaluation that reads saved sampler artifacts and writes `scoring/scores.json`.
 - The scored core experiment compares tau-leaping, theta-RK-2, and
   theta-Trapezoidal on saved artifacts.
+- The tau-leaping baseline is now implemented in `baseline/` rather than
+  importing from `method/`, so future method edits do not alter the baseline.
 
 ## Results
 
@@ -47,6 +49,8 @@ second-order convergence.
 - A continuation audit found theta-RK-2 was generated but not scored. This is
   fixed; the expanded CPU validation rerun completed and wrote all three
   methods to `scoring/scores.json`.
+- A later audit found the baseline imported tau-leaping from `method/`; this
+  is fixed and a CPU validation rerun is being submitted.
 
 ## Deviations from Paper
 

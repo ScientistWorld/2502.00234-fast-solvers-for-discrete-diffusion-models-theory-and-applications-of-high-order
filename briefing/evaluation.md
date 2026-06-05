@@ -14,6 +14,8 @@ Constraint metrics:
 
 - `kl_at_max_steps`: lower is better at the fixed maximum step count.
 - `max_steps`: lower is better; comparisons must use the same step budget.
+- `max_nfe`: lower is better; this records score/intensity evaluations so
+  two-stage solvers remain accountable for their larger per-step cost.
 - `mean_rejection_rate`: lower is better; multiple jumps in one categorical
   dimension are rejected as in the paper.
 - `positive_intensity_fraction`: higher is better; extrapolated intensities

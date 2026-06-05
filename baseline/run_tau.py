@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np
 
 from data.toy_discrete_diffusion.model import DEFAULT_TARGET, reverse_rates
-from method.fast_solvers.samplers import tau_leaping
+from baseline.tau_leaping import tau_leaping
 
 
 def parse_args() -> argparse.Namespace:
@@ -65,4 +65,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

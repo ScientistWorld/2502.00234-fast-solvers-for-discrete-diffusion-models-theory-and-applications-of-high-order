@@ -56,10 +56,12 @@ def _method_metrics(runs: list[dict]) -> dict[str, float]:
         slope = 0.0
 
     selected = max(common_steps)
+    selected_run = by_steps[selected]
     metrics = {
         "kl_at_max_steps": float(kls[selected]),
         "convergence_order": slope,
         "max_steps": float(selected),
+        "max_nfe": float(selected_run.get("nfe", selected)),
         "mean_rejection_rate": float(np.mean(rejections) if rejections else 0.0),
     }
     if positives:
