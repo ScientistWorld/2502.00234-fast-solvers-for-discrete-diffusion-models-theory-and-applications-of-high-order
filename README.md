@@ -100,12 +100,35 @@ Constraint metrics:
 
 </details>
 
+### Iteration 2: gpt-5.5
+- **Milestone**: `core_claim` | **Status**: done
+- **Working time**: 4m | **GPU**: 0.0h
+- **Jobs**: 3 total (1 completed, 2 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-06-05 03:21] - method_runs
+- Implemented tau-leaping, theta-RK-2, and theta-Trapezoidal Poisson jump solvers for the finite-state reverse CTMC.
+- Ran the end-to-end analytic 15-state experiment and wrote sampler artifacts under `outputs/toy/`.
+
+### [2026-06-05 03:22] - core_claim
+- Evaluated saved artifacts with method-independent code in `eval/`.
+- Reproduced the paper's central high-order claim on the analytic toy benchmark: theta-Trapezoidal fitted convergence order is 2.188 versus 1.306 for tau-leaping, with lower KL at the same 64-step budget.
+
+### [2026-06-05 03:30] - method_runs
+- Continuation audit reset the milestone to `method_runs`.
+- Found the implementation is real, but the evaluator omitted theta-RK-2 despite generating its artifacts; updated scoring to include it and submitted a CPU validation rerun.
+
+### [2026-06-05 03:27] - core_claim
+- CPU validation rerun completed the analytic 15-state experiment and wrote tau-leaping, theta-RK-2, and theta-Trapezoidal scores.
+- Fixed `reference.json` schema for theta-RK-2 and restored `core_claim`; theta-Trapezoidal remains second-order and lower-KL than both compared samplers under the same maximum step count.
+
+</details>
+
 
 ---
 
 # Reproduction Milestones
 
-**Current: method_runs**
-
-## Stop Justification
-- Completed at milestone `method_runs`.
+**Current: core_claim**
