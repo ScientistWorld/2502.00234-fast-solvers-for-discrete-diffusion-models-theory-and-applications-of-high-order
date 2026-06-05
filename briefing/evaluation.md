@@ -1,15 +1,20 @@
 # Evaluation
 
-How success is measured. Describe only the metrics, targets, and evaluation procedure — do NOT describe the paper's method or how they achieved these results. Think of this as a general evaluation protocal for other scientists trying to solve the same problem, where they should not see this paper's solution.
+Evaluation reads JSON artifacts written by samplers under `outputs/toy/`.
+For each method and step count it computes `KL(p0 || q_hat_T)` from the saved
+empirical distribution.  It then fits the log-log slope of KL versus step count
+to estimate the convergence order.
 
-## Metrics
+Primary metric:
 
-<!-- What metrics are used? How are they computed? What does higher/lower mean? -->
+- `convergence_order`: higher is better; the paper predicts first order for
+  tau-leaping and second order for the high-order schemes.
 
-## Baselines and Targets
+Constraint metrics:
 
-<!-- What performance levels exist as reference points? Include the paper's reported numbers as targets, and any standard baselines. A scientist agent should know what "good" looks like. -->
-
-## Evaluation Protocol
-
-<!-- How should evaluation be run? What data split, what conditions? Any important details about how to compare fairly (e.g., fixed seeds, specific test sets, averaging over runs). -->
+- `kl_at_max_steps`: lower is better at the fixed maximum step count.
+- `max_steps`: lower is better; comparisons must use the same step budget.
+- `mean_rejection_rate`: lower is better; multiple jumps in one categorical
+  dimension are rejected as in the paper.
+- `positive_intensity_fraction`: higher is better; extrapolated intensities
+  should remain mostly positive before clamping.

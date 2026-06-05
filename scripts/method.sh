@@ -1,14 +1,14 @@
 #!/bin/bash
-# Run the paper's proposed method.
-#
-# This script trains/runs the paper's method using code in method/.
-#
-# Usage:
-#   bash scripts/method.sh
+# Run the paper's theta-RK-2 and theta-Trapezoidal solvers on the toy CTMC.
 
-set -e
+set -euo pipefail
 
 cd /home/user
 
-# TODO: run the paper's method
-# TODO: call scripts/evaluate.sh to score
+python method/run_toy.py \
+  --output-dir outputs/toy \
+  --samples "${SAMPLES:-1000000}" \
+  --steps "${METHOD_STEPS:-16,32,64,128}" \
+  --horizon "${HORIZON:-12}" \
+  --theta "${THETA:-0.5}" \
+  --seed "${METHOD_SEED:-12345}"
