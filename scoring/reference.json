@@ -13,6 +13,21 @@
           "higher_is_better": false,
           "coefficient": -1.0
         },
+        "mean_kl": {
+          "higher_is_better": false,
+          "coefficient": -0.6,
+          "description": "Mean KL over the scored step budgets, rewarding methods that improve across the convergence grid rather than only at the largest budget."
+        },
+        "total_variation_at_max_steps": {
+          "higher_is_better": false,
+          "coefficient": -0.5,
+          "description": "Total variation distance to the analytic target at the largest scored step budget, a bounded distribution-quality check complementary to KL."
+        },
+        "worst_state_abs_error_at_max_steps": {
+          "higher_is_better": false,
+          "coefficient": -0.3,
+          "description": "Largest absolute state-probability error at the largest scored step budget, catching methods that hide poor tail-state behavior in aggregate KL."
+        },
         "max_steps": {
           "higher_is_better": false,
           "coefficient": -0.1
