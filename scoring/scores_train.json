@@ -40,7 +40,8 @@
           "slice_state_subset_mass_abs_error_at_max_steps": 0.020032727272727313,
           "max_steps": 32.0,
           "max_nfe": 32.0,
-          "mean_rejection_rate": 0.229059375
+          "mean_rejection_rate": 0.229059375,
+          "positive_intensity_fraction": 0.0
         },
         "theta_rk2": {
           "convergence_order": 1.2271448781623162,
