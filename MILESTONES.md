@@ -27,3 +27,7 @@
 ### [2026-06-05 03:37] - core_claim
 - CPU validation job `13ceb5df-0d1` completed successfully after baseline separation and `max_nfe` scoring changes.
 - `scoring/scores.json` now reports the NFE constraint; `python validate.py --compare` passes, and theta-Trapezoidal remains second-order with much lower KL than tau-leaping.
+
+### [2026-06-05 03:58] - core_claim
+- Audited the main evaluator and found it lagged the train/test evaluators by omitting distribution-quality and compute-constraint metrics declared in `reference.json`.
+- Updated `eval/evaluate_toy.py` and `scripts/run.sh`; submitting a CPU test job to regenerate artifacts and refresh all score files inside the packaged container.

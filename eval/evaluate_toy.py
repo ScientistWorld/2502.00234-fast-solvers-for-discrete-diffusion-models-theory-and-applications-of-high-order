@@ -36,10 +36,16 @@ def _load(path: Path) -> dict:
 def _method_metrics(runs: list[dict]) -> dict[str, float]:
     by_steps = {int(run["steps"]): run for run in runs}
     kls = {}
+    distributions = {}
     rejections = []
     positives = []
     for steps, run in by_steps.items():
         dist = np.asarray(run["distribution"], dtype=np.float64)
+        total = float(dist.sum())
+        if not np.isfinite(total) or total <= 0.0:
+            raise ValueError("distribution must have positive finite mass")
+        dist = dist / total
+        distributions[steps] = dist
         kls[steps] = kl_divergence(DEFAULT_TARGET, dist)
         diagnostics = run.get("diagnostics", {})
         if "rejection_rate" in diagnostics:
@@ -57,15 +63,40 @@ def _method_metrics(runs: list[dict]) -> dict[str, float]:
 
     selected = max(common_steps)
     selected_run = by_steps[selected]
+    selected_dist = distributions[selected]
+    abs_error = np.abs(DEFAULT_TARGET - selected_dist)
+    even_state_indices = np.asarray([0, 2, 4, 6, 8, 10, 12, 14], dtype=np.int64)
+    target_subset = DEFAULT_TARGET[even_state_indices]
+    dist_subset = selected_dist[even_state_indices]
+    target_subset_mass = float(target_subset.sum())
+    dist_subset_mass = float(dist_subset.sum())
+    subset_kl = kl_divergence(
+        target_subset / target_subset_mass,
+        dist_subset / dist_subset_mass,
+    )
     metrics = {
         "kl_at_max_steps": float(kls[selected]),
         "convergence_order": slope,
+        "mean_kl": float(np.mean([kls[s] for s in common_steps])),
+        "mean_total_variation": float(
+            np.mean(
+                [
+                    0.5 * np.sum(np.abs(DEFAULT_TARGET - distributions[s]))
+                    for s in common_steps
+                ]
+            )
+        ),
+        "total_variation_at_max_steps": float(0.5 * np.sum(abs_error)),
+        "worst_state_abs_error_at_max_steps": float(np.max(abs_error)),
+        "slice_state_subset_kl_at_max_steps": float(subset_kl),
+        "slice_state_subset_mass_abs_error_at_max_steps": float(
+            abs(target_subset_mass - dist_subset_mass)
+        ),
         "max_steps": float(selected),
         "max_nfe": float(selected_run.get("nfe", selected)),
         "mean_rejection_rate": float(np.mean(rejections) if rejections else 0.0),
+        "positive_intensity_fraction": float(np.mean(positives) if positives else 0.0),
     }
-    if positives:
-        metrics["positive_intensity_fraction"] = float(np.mean(positives))
     return metrics
 
 

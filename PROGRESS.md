@@ -52,6 +52,11 @@ second-order convergence.
 - A later audit found the baseline imported tau-leaping from `method/`; this
   is fixed. CPU validation job `13ceb5df-0d1` completed successfully, refreshed
   `scoring/scores.json` with `max_nfe`, and passed `python validate.py --compare`.
+- The main evaluator now reports the same distribution-quality, state-slice,
+  positivity, and compute-constraint metrics declared in `reference.json`.
+  A CPU test job is being submitted to regenerate `outputs/toy` and refresh
+  `scoring/scores.json`, `scoring/scores_train.json`, and
+  `scoring/scores_test.json` inside the container.
 
 ## Deviations from Paper
 
