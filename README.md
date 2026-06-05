@@ -16,7 +16,7 @@ sample from the forward process stationary distribution, a reverse-time grid,
 and transition intensities for all allowed categorical jumps.  It must produce
 samples whose empirical distribution is close to the target data distribution.
 
-The core gym uses the paper's 15-state analytic model.  The forward process has
+The core gym uses a 15-state analytic model.  The forward process has
 rate matrix `Q = E / 15 - I`, target distribution `p0`, horizon `T = 12`, and
 closed-form forward marginals.  Because the exact score is available, the
 experiment isolates numerical error from model-estimation error.
@@ -55,8 +55,8 @@ to estimate the convergence order.
 
 Primary metric:
 
-- `convergence_order`: higher is better; the paper predicts first order for
-  tau-leaping and second order for the high-order schemes.
+- `convergence_order`: higher is better; it estimates how rapidly empirical
+  distribution error decreases as the time grid is refined.
 
 Constraint metrics:
 
@@ -65,7 +65,7 @@ Constraint metrics:
 - `max_nfe`: lower is better; this records score/intensity evaluations so
   two-stage solvers remain accountable for their larger per-step cost.
 - `mean_rejection_rate`: lower is better; multiple jumps in one categorical
-  dimension are rejected as in the paper.
+  dimension are rejected to keep each categorical update valid.
 - `positive_intensity_fraction`: higher is better; extrapolated intensities
   should remain mostly positive before clamping.
 
@@ -295,6 +295,49 @@ Constraint metrics:
 ### [2026-06-05 03:37] - core_claim
 - CPU validation job `13ceb5df-0d1` completed successfully after baseline separation and `max_nfe` scoring changes.
 - `scoring/scores.json` now reports the NFE constraint; `python validate.py --compare` passes, and theta-Trapezoidal remains second-order with much lower KL than tau-leaping.
+
+</details>
+
+### Iteration 8: gpt-5.5 (verifier)
+- **Milestone**: `core_claim` | **Status**: done
+- **Working time**: 6m | **GPU**: 0.0h
+- **Jobs**: 6 total (4 completed, 2 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-06-05 03:21] - method_runs
+- Implemented tau-leaping, theta-RK-2, and theta-Trapezoidal Poisson jump solvers for the finite-state reverse CTMC.
+- Ran the end-to-end analytic 15-state experiment and wrote sampler artifacts under `outputs/toy/`.
+
+### [2026-06-05 03:22] - core_claim
+- Evaluated saved artifacts with method-independent code in `eval/`.
+- Reproduced the paper's central high-order claim on the analytic toy benchmark: theta-Trapezoidal fitted convergence order is 2.188 versus 1.306 for tau-leaping, with lower KL at the same 64-step budget.
+
+### [2026-06-05 03:30] - method_runs
+- Continuation audit reset the milestone to `method_runs`.
+- Found the implementation is real, but the evaluator omitted theta-RK-2 despite generating its artifacts; updated scoring to include it and submitted a CPU validation rerun.
+
+### [2026-06-05 03:27] - core_claim
+- CPU validation rerun completed the analytic 15-state experiment and wrote tau-leaping, theta-RK-2, and theta-Trapezoidal scores.
+- Fixed `reference.json` schema for theta-RK-2 and restored `core_claim`; theta-Trapezoidal remains second-order and lower-KL than both compared samplers under the same maximum step count.
+
+### [2026-06-05 03:34] - core_claim
+- Separated the tau-leaping baseline from `method/` and added `max_nfe` as an explicit compute constraint.
+- Submitting another CPU validation job to refresh `scoring/scores.json` with the new metric.
+
+### [2026-06-05 03:37] - core_claim
+- CPU validation job `13ceb5df-0d1` completed successfully after baseline separation and `max_nfe` scoring changes.
+- `scoring/scores.json` now reports the NFE constraint; `python validate.py --compare` passes, and theta-Trapezoidal remains second-order with much lower KL than tau-leaping.
+
+### [2026-06-05 03:58] - core_claim
+- Audited the main evaluator and found it lagged the train/test evaluators by omitting distribution-quality and compute-constraint metrics declared in `reference.json`.
+- Updated `eval/evaluate_toy.py` and `scripts/run.sh`; submitting a CPU test job to regenerate artifacts and refresh all score files inside the packaged container.
+
+### [2026-06-05 04:02] - core_claim
+- Final verification kept the milestone at `core_claim`.
+- Removed method-name leakage from method-agnostic docs and made the main evaluator score any method key in the artifact format.
+- Regenerated `scoring/scores.json` from saved artifacts and confirmed `python validate.py --compare` passes.
 
 </details>
 
