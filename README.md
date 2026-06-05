@@ -62,6 +62,8 @@ Constraint metrics:
 
 - `kl_at_max_steps`: lower is better at the fixed maximum step count.
 - `max_steps`: lower is better; comparisons must use the same step budget.
+- `max_nfe`: lower is better; this records score/intensity evaluations so
+  two-stage solvers remain accountable for their larger per-step cost.
 - `mean_rejection_rate`: lower is better; multiple jumps in one categorical
   dimension are rejected as in the paper.
 - `positive_intensity_fraction`: higher is better; extrapolated intensities
@@ -126,12 +128,43 @@ Constraint metrics:
 
 </details>
 
+### Iteration 3: gpt-5.5
+- **Milestone**: `core_claim` | **Status**: done
+- **Working time**: 7m | **GPU**: 0.0h
+- **Jobs**: 4 total (2 completed, 2 failed)
+
+<details>
+<summary>Progress Log</summary>
+
+### [2026-06-05 03:21] - method_runs
+- Implemented tau-leaping, theta-RK-2, and theta-Trapezoidal Poisson jump solvers for the finite-state reverse CTMC.
+- Ran the end-to-end analytic 15-state experiment and wrote sampler artifacts under `outputs/toy/`.
+
+### [2026-06-05 03:22] - core_claim
+- Evaluated saved artifacts with method-independent code in `eval/`.
+- Reproduced the paper's central high-order claim on the analytic toy benchmark: theta-Trapezoidal fitted convergence order is 2.188 versus 1.306 for tau-leaping, with lower KL at the same 64-step budget.
+
+### [2026-06-05 03:30] - method_runs
+- Continuation audit reset the milestone to `method_runs`.
+- Found the implementation is real, but the evaluator omitted theta-RK-2 despite generating its artifacts; updated scoring to include it and submitted a CPU validation rerun.
+
+### [2026-06-05 03:27] - core_claim
+- CPU validation rerun completed the analytic 15-state experiment and wrote tau-leaping, theta-RK-2, and theta-Trapezoidal scores.
+- Fixed `reference.json` schema for theta-RK-2 and restored `core_claim`; theta-Trapezoidal remains second-order and lower-KL than both compared samplers under the same maximum step count.
+
+### [2026-06-05 03:34] - core_claim
+- Separated the tau-leaping baseline from `method/` and added `max_nfe` as an explicit compute constraint.
+- Submitting another CPU validation job to refresh `scoring/scores.json` with the new metric.
+
+### [2026-06-05 03:37] - core_claim
+- CPU validation job `13ceb5df-0d1` completed successfully after baseline separation and `max_nfe` scoring changes.
+- `scoring/scores.json` now reports the NFE constraint; `python validate.py --compare` passes, and theta-Trapezoidal remains second-order with much lower KL than tau-leaping.
+
+</details>
+
 
 ---
 
 # Reproduction Milestones
 
-**Current: method_runs**
-
-## Stop Justification
-- Completed at milestone `method_runs`.
+**Current: core_claim**
