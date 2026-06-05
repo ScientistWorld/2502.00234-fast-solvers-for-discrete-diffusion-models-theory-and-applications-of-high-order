@@ -15,16 +15,17 @@
 
 The CPU reproduction completed successfully on the 15-state analytic benchmark.
 
-| Method | KL at 64 steps | Fitted order | Max NFE | Mean rejection rate |
-|---|---:|---:|---:|---:|
-| tau-leaping | 0.007809 | 1.306 | 64 | 0.157 |
-| theta-RK-2 | 0.006443 | 1.330 | 128 | 0.104 |
-| theta-Trapezoidal | 0.000514 | 2.188 | 128 | 0.057 |
+| Method | KL at common NFE 64 | KL at 64 steps | Fitted order | Max NFE | Mean rejection rate |
+|---|---:|---:|---:|---:|---:|
+| tau-leaping | 0.007809 | 0.007809 | 1.306 | 64 | 0.157 |
+| theta-RK-2 | 0.017753 | 0.006443 | 1.330 | 128 | 0.104 |
+| theta-Trapezoidal | 0.003075 | 0.000514 | 2.188 | 128 | 0.057 |
 
-Theta-Trapezoidal is more than an order of magnitude lower in KL than
-tau-leaping at the same maximum step count and substantially lower than
-theta-RK-2 in the reduced-sample run.  It exhibits the expected approximately
-second-order convergence.
+Theta-Trapezoidal has lower KL than tau-leaping at the matched 64-NFE budget
+and is more than an order of magnitude lower in KL at the same maximum step
+count.  It exhibits the expected approximately second-order convergence.
+Theta-RK-2 is included as a faithful implementation, but it does not beat
+tau-leaping at matched NFE in this reduced-sample run.
 
 ## Remaining
 
@@ -57,6 +58,11 @@ second-order convergence.
   Final verification also removed method-name leakage from method-agnostic
   public docs and changed the main evaluator to score any method key present
   in the saved artifact format.
+- A final audit found the headline metrics compared methods at equal maximum
+  step count but not equal NFE.  The evaluator and target schema now include
+  `kl_at_common_nfe`, `total_variation_at_common_nfe`, and `common_nfe`; the
+  current saved artifacts support the core claim for theta-Trapezoidal at
+  common NFE 64.
 
 ## Deviations from Paper
 

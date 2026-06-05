@@ -36,3 +36,8 @@
 - Final verification kept the milestone at `core_claim`.
 - Removed method-name leakage from method-agnostic docs and made the main evaluator score any method key in the artifact format.
 - Regenerated `scoring/scores.json` from saved artifacts and confirmed `python validate.py --compare` passes.
+
+### [2026-06-05 04:08] - core_claim
+- Added explicit matched-NFE scoring after an audit found the headline comparison only matched step count.
+- Existing saved artifacts support the core theta-Trapezoidal claim at common NFE 64: KL 0.003075 versus 0.007809 for tau-leaping.
+- Submitting a CPU validation job to run the updated evaluator inside the packaged container.

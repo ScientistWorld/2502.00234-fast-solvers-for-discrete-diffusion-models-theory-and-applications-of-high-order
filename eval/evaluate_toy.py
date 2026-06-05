@@ -30,18 +30,35 @@ def _load(path: Path) -> dict:
     return json.loads(path.read_text())
 
 
-def _method_metrics(runs: list[dict]) -> dict[str, float]:
+def _normalized_distribution(run: dict) -> np.ndarray:
+    dist = np.asarray(run["distribution"], dtype=np.float64)
+    total = float(dist.sum())
+    if not np.isfinite(total) or total <= 0.0:
+        raise ValueError("distribution must have positive finite mass")
+    return dist / total
+
+
+def _common_nfe(method_runs: dict[str, list[dict]]) -> int | None:
+    nfe_sets = []
+    for runs in method_runs.values():
+        nfes = {int(run.get("nfe", run["steps"])) for run in runs}
+        if nfes:
+            nfe_sets.append(nfes)
+    if not nfe_sets:
+        return None
+    shared = set.intersection(*nfe_sets)
+    return max(shared) if shared else None
+
+
+def _method_metrics(runs: list[dict], common_nfe: int | None = None) -> dict[str, float]:
     by_steps = {int(run["steps"]): run for run in runs}
+    by_nfe = {int(run.get("nfe", run["steps"])): run for run in runs}
     kls = {}
     distributions = {}
     rejections = []
     positives = []
     for steps, run in by_steps.items():
-        dist = np.asarray(run["distribution"], dtype=np.float64)
-        total = float(dist.sum())
-        if not np.isfinite(total) or total <= 0.0:
-            raise ValueError("distribution must have positive finite mass")
-        dist = dist / total
+        dist = _normalized_distribution(run)
         distributions[steps] = dist
         kls[steps] = kl_divergence(DEFAULT_TARGET, dist)
         diagnostics = run.get("diagnostics", {})
@@ -94,6 +111,17 @@ def _method_metrics(runs: list[dict]) -> dict[str, float]:
         "mean_rejection_rate": float(np.mean(rejections) if rejections else 0.0),
         "positive_intensity_fraction": float(np.mean(positives) if positives else 0.0),
     }
+    if common_nfe is not None and common_nfe in by_nfe:
+        common_dist = _normalized_distribution(by_nfe[common_nfe])
+        metrics.update(
+            {
+                "common_nfe": float(common_nfe),
+                "kl_at_common_nfe": float(kl_divergence(DEFAULT_TARGET, common_dist)),
+                "total_variation_at_common_nfe": float(
+                    0.5 * np.sum(np.abs(DEFAULT_TARGET - common_dist))
+                ),
+            }
+        )
     return metrics
 
 
@@ -102,11 +130,17 @@ def main() -> None:
     method_data = _load(args.output_dir / "method_outputs.json")
     baseline_data = _load(args.output_dir / "baseline_outputs.json")
 
-    results = {}
+    method_runs = {}
     for source in (baseline_data, method_data):
         for method_name, runs in source.get("methods", {}).items():
             if runs:
-                results[method_name] = _method_metrics(runs)
+                method_runs[method_name] = runs
+
+    common_nfe = _common_nfe(method_runs)
+    results = {
+        method_name: _method_metrics(runs, common_nfe)
+        for method_name, runs in method_runs.items()
+    }
 
     scores = {
         "experiments": {

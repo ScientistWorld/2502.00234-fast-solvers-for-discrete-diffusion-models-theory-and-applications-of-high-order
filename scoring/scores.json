@@ -14,7 +14,10 @@
           "max_steps": 64.0,
           "max_nfe": 64.0,
           "mean_rejection_rate": 0.157330546875,
-          "positive_intensity_fraction": 0.0
+          "positive_intensity_fraction": 0.0,
+          "common_nfe": 64.0,
+          "kl_at_common_nfe": 0.007808503859155614,
+          "total_variation_at_common_nfe": 0.04721727272727272
         },
         "theta_rk2": {
           "kl_at_max_steps": 0.006442677362286676,
@@ -28,7 +31,10 @@
           "max_steps": 64.0,
           "max_nfe": 128.0,
           "mean_rejection_rate": 0.10436519531249999,
-          "positive_intensity_fraction": 0.9853403850446428
+          "positive_intensity_fraction": 0.9853403850446428,
+          "common_nfe": 64.0,
+          "kl_at_common_nfe": 0.01775323769590322,
+          "total_variation_at_common_nfe": 0.0704972727272727
         },
         "theta_trapezoidal": {
           "kl_at_max_steps": 0.0005137264376515756,
@@ -42,7 +48,10 @@
           "max_steps": 64.0,
           "max_nfe": 128.0,
           "mean_rejection_rate": 0.05722140625,
-          "positive_intensity_fraction": 0.9849450758218068
+          "positive_intensity_fraction": 0.9849450758218068,
+          "common_nfe": 64.0,
+          "kl_at_common_nfe": 0.003075416019343199,
+          "total_variation_at_common_nfe": 0.02763090909090906
         }
       }
     }

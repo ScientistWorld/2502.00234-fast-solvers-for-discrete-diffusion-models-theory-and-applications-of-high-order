@@ -1,7 +1,7 @@
 {
   "experiments": {
     "toy_15_state_convergence": {
-      "description": "Analytic 15-state CTMC experiment from Section 6.1 / Appendix D.1: high-order samplers should converge faster in KL than first-order tau-leaping under the same step budget.",
+      "description": "Analytic 15-state CTMC experiment from Section 6.1 / Appendix D.1: high-order samplers should converge faster in KL than first-order tau-leaping, including under a matched function-evaluation budget.",
       "weight": 1.0,
       "primary_metric": "convergence_order",
       "metrics": {
@@ -19,6 +19,16 @@
           "higher_is_better": false,
           "coefficient": -0.6,
           "description": "Mean KL over the scored step budgets, rewarding methods that improve across the convergence grid rather than only at the largest budget."
+        },
+        "kl_at_common_nfe": {
+          "higher_is_better": false,
+          "coefficient": -1.2,
+          "description": "KL divergence at the largest number of function evaluations shared by every scored method; this is the headline matched-compute quality metric."
+        },
+        "total_variation_at_common_nfe": {
+          "higher_is_better": false,
+          "coefficient": -0.6,
+          "description": "Total variation distance at the largest shared NFE budget, a bounded matched-compute quality check."
         },
         "mean_total_variation": {
           "higher_is_better": false,
@@ -54,6 +64,11 @@
           "higher_is_better": false,
           "coefficient": -0.2,
           "description": "Largest scored number of function evaluations, penalizing extra solver work independent of wall-clock hardware."
+        },
+        "common_nfe": {
+          "higher_is_better": false,
+          "coefficient": -0.1,
+          "description": "Largest NFE budget shared by all scored methods for matched-compute comparison."
         },
         "mean_rejection_rate": {
           "higher_is_better": false,
