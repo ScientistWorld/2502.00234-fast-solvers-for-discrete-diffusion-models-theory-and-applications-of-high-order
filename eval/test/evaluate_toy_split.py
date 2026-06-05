@@ -100,19 +100,12 @@ def _method_metrics(runs: list[dict]) -> dict[str, float]:
     selected_runs = _slice_runs(runs)
     kls: dict[int, float] = {}
     distributions: dict[int, np.ndarray] = {}
-    rejections = []
-    positives = []
 
     for run in selected_runs:
         steps = int(run["steps"])
         dist = _dist(run)
         distributions[steps] = dist
         kls[steps] = kl_divergence(DEFAULT_TARGET, dist)
-        diagnostics = run.get("diagnostics", {})
-        if "rejection_rate" in diagnostics:
-            rejections.append(float(diagnostics["rejection_rate"]))
-        if "positive_intensity_fraction" in diagnostics:
-            positives.append(float(diagnostics["positive_intensity_fraction"]))
 
     common_steps = sorted(kls)
     x = np.log(np.asarray(common_steps, dtype=np.float64))
@@ -146,8 +139,6 @@ def _method_metrics(runs: list[dict]) -> dict[str, float]:
         ),
         "max_steps": float(max_steps),
         "max_nfe": float(selected_run.get("nfe", max_steps)),
-        "mean_rejection_rate": float(np.mean(rejections) if rejections else 0.0),
-        "positive_intensity_fraction": float(np.mean(positives) if positives else 0.0),
     }
     return metrics
 

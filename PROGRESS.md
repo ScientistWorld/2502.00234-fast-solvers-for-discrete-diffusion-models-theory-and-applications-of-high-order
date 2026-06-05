@@ -15,11 +15,11 @@
 
 The CPU reproduction completed successfully on the 15-state analytic benchmark.
 
-| Method | KL at common NFE 64 | KL at 64 steps | Fitted order | Max NFE | Mean rejection rate |
+| Method | KL at common NFE 64 | KL at 64 steps | Fitted order | Max steps | Max NFE |
 |---|---:|---:|---:|---:|---:|
-| tau-leaping | 0.007809 | 0.007809 | 1.306 | 64 | 0.157 |
-| theta-RK-2 | 0.017753 | 0.006443 | 1.330 | 128 | 0.104 |
-| theta-Trapezoidal | 0.003075 | 0.000514 | 2.188 | 128 | 0.057 |
+| tau-leaping | 0.007809 | 0.007809 | 1.306 | 64 | 64 |
+| theta-RK-2 | 0.017753 | 0.006443 | 1.330 | 64 | 128 |
+| theta-Trapezoidal | 0.003075 | 0.000514 | 2.188 | 64 | 128 |
 
 Theta-Trapezoidal has lower KL than tau-leaping at the matched 64-NFE budget
 and is more than an order of magnitude lower in KL at the same maximum step
@@ -54,7 +54,7 @@ tau-leaping at matched NFE in this reduced-sample run.
   is fixed. CPU validation job `13ceb5df-0d1` completed successfully, refreshed
   `scoring/scores.json` with `max_nfe`, and passed `python validate.py --compare`.
 - The main evaluator now reports the same distribution-quality, state-slice,
-  positivity, and compute-constraint metrics declared in `reference.json`.
+  and compute-constraint metrics declared in `reference.json`.
   Final verification also removed method-name leakage from method-agnostic
   public docs and changed the main evaluator to score any method key present
   in the saved artifact format.
@@ -63,6 +63,9 @@ tau-leaping at matched NFE in this reduced-sample run.
   `kl_at_common_nfe`, `total_variation_at_common_nfe`, and `common_nfe`; the
   current saved artifacts support the core claim for theta-Trapezoidal at
   common NFE 64.
+- Final verification removed method-specific, self-reported diagnostics from
+  the scored metric schema.  The remaining constraint metrics are derived from
+  the artifact distributions and machine-independent compute budgets.
 
 ## Deviations from Paper
 

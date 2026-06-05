@@ -55,17 +55,10 @@ def _method_metrics(runs: list[dict], common_nfe: int | None = None) -> dict[str
     by_nfe = {int(run.get("nfe", run["steps"])): run for run in runs}
     kls = {}
     distributions = {}
-    rejections = []
-    positives = []
     for steps, run in by_steps.items():
         dist = _normalized_distribution(run)
         distributions[steps] = dist
         kls[steps] = kl_divergence(DEFAULT_TARGET, dist)
-        diagnostics = run.get("diagnostics", {})
-        if "rejection_rate" in diagnostics:
-            rejections.append(float(diagnostics["rejection_rate"]))
-        if "positive_intensity_fraction" in diagnostics:
-            positives.append(float(diagnostics["positive_intensity_fraction"]))
 
     common_steps = sorted(kls)
     if len(common_steps) >= 2:
@@ -108,8 +101,6 @@ def _method_metrics(runs: list[dict], common_nfe: int | None = None) -> dict[str
         ),
         "max_steps": float(selected),
         "max_nfe": float(selected_run.get("nfe", selected)),
-        "mean_rejection_rate": float(np.mean(rejections) if rejections else 0.0),
-        "positive_intensity_fraction": float(np.mean(positives) if positives else 0.0),
     }
     if common_nfe is not None and common_nfe in by_nfe:
         common_dist = _normalized_distribution(by_nfe[common_nfe])

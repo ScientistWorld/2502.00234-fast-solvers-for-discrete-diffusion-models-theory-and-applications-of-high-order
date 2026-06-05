@@ -38,9 +38,7 @@
           "slice_state_subset_kl_at_max_steps": 0.005075269699457376,
           "slice_state_subset_mass_abs_error_at_max_steps": 0.0074127272727272375,
           "max_steps": 64.0,
-          "max_nfe": 64.0,
-          "mean_rejection_rate": 0.08560171874999999,
-          "positive_intensity_fraction": 0.0
+          "max_nfe": 64.0
         },
         "theta_rk2": {
           "convergence_order": 1.505251199249038,
@@ -52,9 +50,7 @@
           "slice_state_subset_kl_at_max_steps": 0.0031340071714143942,
           "slice_state_subset_mass_abs_error_at_max_steps": 0.010792727272727232,
           "max_steps": 64.0,
-          "max_nfe": 128.0,
-          "mean_rejection_rate": 0.054735390625,
-          "positive_intensity_fraction": 0.9883221316964286
+          "max_nfe": 128.0
         },
         "theta_trapezoidal": {
           "convergence_order": 2.361545912041969,
@@ -66,9 +62,7 @@
           "slice_state_subset_kl_at_max_steps": 0.0002751144790907904,
           "slice_state_subset_mass_abs_error_at_max_steps": 0.0003072727272727116,
           "max_steps": 64.0,
-          "max_nfe": 128.0,
-          "mean_rejection_rate": 0.027025624999999998,
-          "positive_intensity_fraction": 0.9876645455379236
+          "max_nfe": 128.0
         }
       }
     }

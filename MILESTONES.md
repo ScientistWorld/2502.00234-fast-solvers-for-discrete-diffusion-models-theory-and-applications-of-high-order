@@ -41,3 +41,8 @@
 - Added explicit matched-NFE scoring after an audit found the headline comparison only matched step count.
 - Existing saved artifacts support the core theta-Trapezoidal claim at common NFE 64: KL 0.003075 versus 0.007809 for tau-leaping.
 - Submitting a CPU validation job to run the updated evaluator inside the packaged container.
+
+### [2026-06-05 04:25] - core_claim
+- Final verification kept the milestone at `core_claim`.
+- Removed method-specific self-reported diagnostics from the scored metric schema and evaluator outputs.
+- Confirmed `python validate.py --compare` passes with method-independent distribution and compute-budget metrics.

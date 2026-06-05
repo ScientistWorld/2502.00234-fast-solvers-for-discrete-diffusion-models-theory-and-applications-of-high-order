@@ -2,6 +2,7 @@
   "experiments": {
     "toy_15_state_convergence": {
       "description": "Analytic 15-state CTMC experiment from Section 6.1 / Appendix D.1: high-order samplers should converge faster in KL than first-order tau-leaping, including under a matched function-evaluation budget.",
+      "notes": "The paper reports the toy experiment in Figure 2 as empirical KL curves with fitted log-log slopes rather than tabulated KL values. The numeric reference therefore records the stated approximately second-order behavior for the proposed high-order solvers; reproduced KL and NFE values are measured from saved artifacts in scores.json.",
       "weight": 1.0,
       "primary_metric": "convergence_order",
       "metrics": {
@@ -69,16 +70,6 @@
           "higher_is_better": false,
           "coefficient": -0.1,
           "description": "Largest NFE budget shared by all scored methods for matched-compute comparison."
-        },
-        "mean_rejection_rate": {
-          "higher_is_better": false,
-          "coefficient": -0.1,
-          "description": "Mean rejected proposal fraction over scored runs, penalizing unstable or invalid jump proposals."
-        },
-        "positive_intensity_fraction": {
-          "higher_is_better": true,
-          "coefficient": 0.2,
-          "description": "Mean fraction of proposed intensities reported positive; methods that do not report this validity diagnostic score 0.0."
         }
       },
       "results": {
