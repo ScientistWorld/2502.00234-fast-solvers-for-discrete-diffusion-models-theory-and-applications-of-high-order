@@ -5,4 +5,4 @@ action: done
 gpus: 0
 test: false
 milestone: core_claim
-notes: "Complementary budget/state split; 36 train metrics, 36 test metrics; theta_trapezoidal remains best on both slices, with lower held-out KL/TV because test uses the larger odd-ranked step budget; no nulls or paper-agreement metrics."
+notes: "Made download and runner scripts repo-root relative; verified no external artifacts or shared paths are required."

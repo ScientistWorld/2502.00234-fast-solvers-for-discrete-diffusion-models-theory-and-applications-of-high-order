@@ -3,8 +3,9 @@
 
 set -euo pipefail
 
-cd /home/user
-export PYTHONPATH=/home/user:${PYTHONPATH:-}
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$REPO_ROOT"
+export PYTHONPATH="$REPO_ROOT:${PYTHONPATH:-}"
 mkdir -p scoring
 
 python eval/evaluate_toy.py \

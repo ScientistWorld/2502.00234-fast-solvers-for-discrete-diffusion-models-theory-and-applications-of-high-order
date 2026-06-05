@@ -8,6 +8,7 @@
 
 set -euo pipefail
 
-cd /home/user
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$REPO_ROOT"
 mkdir -p data/downloads
 echo "No external downloads are required for the analytic toy-model experiment."
