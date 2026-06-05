@@ -9,4 +9,5 @@
 - [x] Write method-agnostic problem/evaluation docs.
 - [x] Wire scripts and container setup.
 - [ ] Run full reproduction job.
+- [x] Fix container import path after first job failure.
 - [ ] Update scores and milestone after job completion.

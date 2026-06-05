@@ -4,6 +4,7 @@
 set -euo pipefail
 
 cd /home/user
+export PYTHONPATH=/home/user:${PYTHONPATH:-}
 mkdir -p scoring
 
 python eval/evaluate_toy.py \

@@ -4,11 +4,12 @@
 set -euo pipefail
 
 cd /home/user
+export PYTHONPATH=/home/user:${PYTHONPATH:-}
 
 python method/run_toy.py \
   --output-dir outputs/toy \
-  --samples "${SAMPLES:-1000000}" \
-  --steps "${METHOD_STEPS:-16,32,64,128}" \
+  --samples "${SAMPLES:-50000}" \
+  --steps "${METHOD_STEPS:-8,16,32,64}" \
   --horizon "${HORIZON:-12}" \
   --theta "${THETA:-0.5}" \
   --seed "${METHOD_SEED:-12345}"
