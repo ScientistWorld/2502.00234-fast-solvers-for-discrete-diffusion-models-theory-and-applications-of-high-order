@@ -23,3 +23,7 @@
 ### [2026-06-05 03:34] - core_claim
 - Separated the tau-leaping baseline from `method/` and added `max_nfe` as an explicit compute constraint.
 - Submitting another CPU validation job to refresh `scoring/scores.json` with the new metric.
+
+### [2026-06-05 03:37] - core_claim
+- CPU validation job `13ceb5df-0d1` completed successfully after baseline separation and `max_nfe` scoring changes.
+- `scoring/scores.json` now reports the NFE constraint; `python validate.py --compare` passes, and theta-Trapezoidal remains second-order with much lower KL than tau-leaping.

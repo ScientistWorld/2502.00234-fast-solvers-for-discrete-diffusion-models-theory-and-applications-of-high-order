@@ -15,11 +15,11 @@
 
 The CPU reproduction completed successfully on the 15-state analytic benchmark.
 
-| Method | KL at 64 steps | Fitted order | Mean rejection rate |
-|---|---:|---:|---:|
-| tau-leaping | 0.007809 | 1.306 | 0.157 |
-| theta-RK-2 | 0.006443 | 1.330 | 0.104 |
-| theta-Trapezoidal | 0.000514 | 2.188 | 0.057 |
+| Method | KL at 64 steps | Fitted order | Max NFE | Mean rejection rate |
+|---|---:|---:|---:|---:|
+| tau-leaping | 0.007809 | 1.306 | 64 | 0.157 |
+| theta-RK-2 | 0.006443 | 1.330 | 128 | 0.104 |
+| theta-Trapezoidal | 0.000514 | 2.188 | 128 | 0.057 |
 
 Theta-Trapezoidal is more than an order of magnitude lower in KL than
 tau-leaping at the same maximum step count and substantially lower than
@@ -50,7 +50,8 @@ second-order convergence.
   fixed; the expanded CPU validation rerun completed and wrote all three
   methods to `scoring/scores.json`.
 - A later audit found the baseline imported tau-leaping from `method/`; this
-  is fixed and a CPU validation rerun is being submitted.
+  is fixed. CPU validation job `13ceb5df-0d1` completed successfully, refreshed
+  `scoring/scores.json` with `max_nfe`, and passed `python validate.py --compare`.
 
 ## Deviations from Paper
 

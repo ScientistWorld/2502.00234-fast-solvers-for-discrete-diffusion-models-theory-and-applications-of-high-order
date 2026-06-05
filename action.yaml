@@ -1,8 +1,8 @@
 # IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
 # Do NOT sleep, poll, or wait for jobs. The system reads this file
 # only after your turn ends. Sleeping blocks the entire pipeline.
-action: submit
+action: done
 gpus: 0
 test: true
 milestone: core_claim
-notes: "CPU validation rerun after separating the tau-leaping baseline from method/ and adding max_nfe to scoring."
+notes: "Job 13ceb5df-0d1 passed; core 15-state CTMC reproduction is packaged with independent baseline, artifact-based evaluation, and max_nfe constraint."
