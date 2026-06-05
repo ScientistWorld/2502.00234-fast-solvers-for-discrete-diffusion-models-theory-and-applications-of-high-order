@@ -5,4 +5,4 @@ action: submit
 gpus: 0
 test: false
 milestone: core_claim
-notes: "Run split evaluators against existing outputs/toy artifacts to produce scores_train.json and scores_test.json."
+notes: "Re-run split evaluators after making missing positivity diagnostics score 0.0 for complete metric coverage."

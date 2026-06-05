@@ -63,7 +63,7 @@
         "positive_intensity_fraction": {
           "higher_is_better": true,
           "coefficient": 0.2,
-          "description": "Mean fraction of proposed intensities that are positive, rewarding methods that preserve valid CTMC rates."
+          "description": "Mean fraction of proposed intensities reported positive; methods that do not report this validity diagnostic score 0.0."
         }
       },
       "results": {

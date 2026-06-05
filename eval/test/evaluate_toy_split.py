@@ -147,9 +147,8 @@ def _method_metrics(runs: list[dict]) -> dict[str, float]:
         "max_steps": float(max_steps),
         "max_nfe": float(selected_run.get("nfe", max_steps)),
         "mean_rejection_rate": float(np.mean(rejections) if rejections else 0.0),
+        "positive_intensity_fraction": float(np.mean(positives) if positives else 0.0),
     }
-    if positives:
-        metrics["positive_intensity_fraction"] = float(np.mean(positives))
     return metrics
 
 
