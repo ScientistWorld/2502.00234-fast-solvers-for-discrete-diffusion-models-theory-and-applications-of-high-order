@@ -1,5 +1,8 @@
-action: done
-gpus: 0
+# IMPORTANT: Once you set action to 'submit' or 'done', STOP immediately.
+# Do NOT sleep, poll, or wait for jobs. The system reads this file
+# only after your turn ends. Sleeping blocks the entire pipeline.
+action: pending
+gpus: 1
 test: false
-milestone: core_claim
-notes: "Core claim reproduced on the paper's analytic 15-state toy benchmark. Scoring compares tau-leaping against theta-Trapezoidal; theta-Trapezoidal achieved KL 0.000514 at 64 steps and fitted order 2.188. python validate.py --compare passes."
+milestone: method_runs
+notes: ""
