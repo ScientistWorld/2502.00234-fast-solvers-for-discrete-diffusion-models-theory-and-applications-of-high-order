@@ -9,20 +9,24 @@
 
 ## Results
 
-No full reproduction scores yet. A local tiny smoke run could not execute because
-the login-node Python environment does not currently have `numpy`; the
-  reproducible container setup installs it through `environment/setup.sh`.
-- The first submitted job failed before running the samplers because the
-  container did not have `/home/user` on Python's import path for script-path
-  execution. This has been fixed with package markers and `PYTHONPATH`.
+The CPU reproduction completed successfully on the 15-state analytic benchmark.
+
+| Method | KL at 64 steps | Fitted order | Mean rejection rate |
+|---|---:|---:|---:|
+| tau-leaping | 0.007809 | 1.306 | 0.157 |
+| theta-RK-2 | 0.006443 | 1.330 | 0.104 |
+| theta-Trapezoidal | 0.000514 | 2.188 | 0.057 |
+
+Theta-Trapezoidal is more than an order of magnitude lower in KL than
+tau-leaping at the same maximum step count and exhibits the expected
+approximately second-order convergence.
 
 ## Remaining
 
-- Run the submitted CPU job to generate 50,000 samples per method/step count.
-- Inspect `scoring/scores.json` and compare against the reference convergence
-  expectations.
-- If the measured slopes are too noisy, increase sample count or adjust the
-  evaluated step grid while keeping the same paper procedure.
+- Optional future work: reproduce the large text, image, and GSM8K experiments
+  using RADD, MaskGIT, and LLaDA assets.
+- Optional future work: add more toy-model settings, such as theta sweeps or
+  higher sample counts, if more CPU time is available.
 
 ## Issues
 
@@ -32,6 +36,8 @@ the login-node Python environment does not currently have `numpy`; the
 - The scheduler gave the CPU job a 1-hour timeout and one CPU. The sample count
   is scaled from the paper's 1,000,000 to 50,000 for the next run while keeping
   the same CTMC, solvers, uniform grids, and KL evaluation procedure.
+- The scaled run completed in about 60 seconds and produced stable enough
+  results to support the core claim.
 
 ## Deviations from Paper
 
