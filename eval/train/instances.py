@@ -84,30 +84,60 @@ class Oracle:
         if decay.ndim:
             decay = decay[:, None]
             floor = floor[:, None]
-        onehot = states[:, :, None] == self._states  # (m, d, S)
+        onehot = states.T[:, :, None] == self._states  # (d, m, S), site-major
         prob = np.zeros(m)
-        neighbours = np.zeros((m, d, S))
+        neighbours = np.zeros((d, m, S))
         for k in range(inst.weights.shape[0]):
             order = inst.orders[k]
             A = inst.transitions[k]
-            # Emission K_t(z_j | a) in chain order: (d, m, S).
-            emit = floor + decay * np.moveaxis(onehot[:, order, :], 1, 0)
+            emit = floor + decay * onehot[order]  # K_t(z_j | a) in chain order
             phi = np.empty((d, m, S))
             beta = np.empty((d, m, S))
             phi[0] = inst.initial[k]
             for j in range(d - 1):
-                phi[j + 1] = S * ((phi[j] * emit[j]) @ A[j])
+                phi[j + 1] = (phi[j] * emit[j]) @ (S * A[j])
             beta[d - 1] = 1.0
             for j in range(d - 2, -1, -1):
-                beta[j] = S * ((emit[j + 1] * beta[j + 1]) @ A[j].T)
+                beta[j] = (emit[j + 1] * beta[j + 1]) @ (S * A[j].T)
             pb = phi * beta  # every slice carries the same S^(d-1) scale
-            total = (pb[d - 1] * emit[d - 1]).sum(axis=-1)
-            nb = floor * pb.sum(axis=-1)[..., None] + decay * pb  # (d, m, S)
-            neighbours[:, order, :] += inst.weights[k] * np.moveaxis(nb, 0, 1)
-            prob += inst.weights[k] * total
-        rates = neighbours / (S * prob[:, None, None])
-        rates[onehot] = 0.0
-        return rates
+            prob += inst.weights[k] * (pb[d - 1] * emit[d - 1]).sum(axis=-1)
+            total = pb.sum(axis=-1, keepdims=True)
+            pb *= decay
+            pb += floor * total
+            neighbours[order] += inst.weights[k] * pb
+        neighbours /= S * prob[:, None]
+        neighbours[onehot] = 0.0
+        return np.ascontiguousarray(np.moveaxis(neighbours, 0, 1))
+
+
+def log_prob(inst: Instance, x: np.ndarray) -> np.ndarray:
+    """Exact log p0(x) for an (m, d) array of states."""
+    x = np.asarray(x, dtype=np.int64)
+    comps = []
+    for k in range(inst.weights.shape[0]):
+        z = x[:, inst.orders[k]]
+        lp = np.log(inst.weights[k]) + np.log(inst.initial[k][z[:, 0]])
+        for j in range(inst.num_sites - 1):
+            lp = lp + np.log(inst.transitions[k][j][z[:, j], z[:, j + 1]])
+        comps.append(lp)
+    comps = np.stack(comps)
+    top = comps.max(axis=0)
+    return top + np.log(np.exp(comps - top).sum(axis=0))
+
+
+def likelihood_profile(
+    inst: Instance, rng: np.random.Generator, num_reference: int, num_bins: int
+) -> tuple[np.ndarray, np.ndarray]:
+    """Equal-mass bins of log p0(x) under p0, from a large exact sample.
+
+    Returns interior bin edges and the reference probability of each bin.
+    """
+    ref = log_prob(inst, sample_exact(inst, num_reference, rng))
+    edges = np.unique(np.quantile(ref, np.arange(1, num_bins) / num_bins))
+    probs = np.bincount(
+        np.searchsorted(edges, ref, side="right"), minlength=edges.size + 1
+    ) / ref.size
+    return edges, probs
 
 
 def site_pairs(num_sites: int) -> list[tuple[int, int]]:

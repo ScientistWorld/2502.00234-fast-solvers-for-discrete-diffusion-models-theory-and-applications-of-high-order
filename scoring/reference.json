@@ -1,75 +1,51 @@
 {
   "experiments": {
-    "toy_15_state_convergence": {
-      "description": "Analytic 15-state CTMC experiment from Section 6.1 / Appendix D.1: high-order samplers should converge faster in KL than first-order tau-leaping, including under a matched function-evaluation budget.",
-      "notes": "The paper reports the toy experiment in Figure 2 as empirical KL curves with fitted log-log slopes rather than tabulated KL values. The numeric reference therefore records the stated approximately second-order behavior for the proposed high-order solvers; reproduced KL and NFE values are measured from saved artifacts in scores.json.",
+    "multisite_reverse_ctmc": {
+      "description": "Sampling the reverse CTMC of a uniform-noise discrete diffusion model on X = [15]^10 under a fixed budget of intensity evaluations (NFE). The evaluator owns analytic held-out data distributions, answers intensity requests exactly, counts NFE, and scores the returned samples against the exact target on site marginals, site-pair marginals and the exact log-likelihood profile, at budgets 8, 16, 32 and 64 NFE.",
+      "notes": "Scaled extension of the paper's Section 6.1 / Appendix D.1 analytic toy (15 states per site, Q = E/15 - I per site, T = 12, arithmetic time grid, theta = 1/2, targets drawn uniformly from the simplex) from one site to ten sites, so that the joint state space (15^10) cannot be enumerated and a single intensity call no longer reveals the whole target. The paper's matched-NFE comparison (Sections 6.2-6.4) is the scoring regime. The paper reports Figure 2 slopes on the one-site toy over 16-1024 steps with 10^6 samples (theta-Trapezoidal 1.937, theta-RK-2 1.543, last four points 1.819); the gym's convergence_order is a pre-asymptotic fit over NFE 8-64 on multi-site pair marginals and is not on that scale, so those slopes are kept under _paper_reported. The convergence_order entries below record the paper's stated approximately second-order claim and are unchanged from earlier iterations.",
+      "_paper_reported": {
+        "figure2_slope_theta_trapezoidal": 1.937,
+        "figure2_slope_theta_rk2": 1.543,
+        "figure2_slope_theta_rk2_last_four_points": 1.819,
+        "setting": "one 15-state site, target uniform on the simplex, 10^6 samples, steps 16-1024, KL(p0 || q_hat)"
+      },
       "weight": 1.0,
       "primary_metric": "convergence_order",
       "metrics": {
-        "convergence_order": {
-          "higher_is_better": true,
-          "coefficient": 1.0,
-          "description": "Estimated decay order of KL error across the scored convergence grid."
+        "log10_pair_kl_nfe8": {
+          "higher_is_better": false,
+          "coefficient": -0.75,
+          "description": "log10 of the mean over all 45 site pairs of KL(p0 || q_hat) on the 225-cell pair marginal, geometric mean over held-out instances, at 8 intensity evaluations per sample."
         },
-        "kl_at_max_steps": {
+        "log10_pair_kl_nfe16": {
+          "higher_is_better": false,
+          "coefficient": -0.75,
+          "description": "As log10_pair_kl_nfe8, at 16 intensity evaluations per sample."
+        },
+        "log10_pair_kl_nfe32": {
+          "higher_is_better": false,
+          "coefficient": -0.75,
+          "description": "As log10_pair_kl_nfe8, at 32 intensity evaluations per sample."
+        },
+        "log10_pair_kl_nfe64": {
+          "higher_is_better": false,
+          "coefficient": -0.75,
+          "description": "As log10_pair_kl_nfe8, at 64 intensity evaluations per sample."
+        },
+        "log10_loglik_kl_mean": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "KL divergence from the analytic target distribution at the largest scored step budget."
+          "description": "log10 of KL(p0 || q_hat) on 50 equal-mass bins of the exact data log-likelihood log p0(x), averaged over instances and budgets. Sensitive to errors in the full joint configuration that pair marginals can miss."
         },
-        "mean_kl": {
-          "higher_is_better": false,
-          "coefficient": -0.6,
-          "description": "Mean KL over the scored step budgets, rewarding methods that improve across the convergence grid rather than only at the largest budget."
-        },
-        "kl_at_common_nfe": {
-          "higher_is_better": false,
-          "coefficient": -1.2,
-          "description": "KL divergence at the largest number of function evaluations shared by every scored method; this is the headline matched-compute quality metric."
-        },
-        "total_variation_at_common_nfe": {
-          "higher_is_better": false,
-          "coefficient": -0.6,
-          "description": "Total variation distance at the largest shared NFE budget, a bounded matched-compute quality check."
-        },
-        "mean_total_variation": {
-          "higher_is_better": false,
-          "coefficient": -0.45,
-          "description": "Mean total variation distance across the scored step budgets, catching methods that optimize KL at only one budget."
-        },
-        "total_variation_at_max_steps": {
+        "log10_site_kl_mean": {
           "higher_is_better": false,
           "coefficient": -0.5,
-          "description": "Total variation distance to the analytic target at the largest scored step budget, a bounded distribution-quality check complementary to KL."
+          "description": "log10 of the mean single-site KL(p0 || q_hat) (the paper's one-site quantity), averaged over instances and budgets."
         },
-        "worst_state_abs_error_at_max_steps": {
-          "higher_is_better": false,
-          "coefficient": -0.3,
-          "description": "Largest absolute state-probability error at the largest scored step budget, catching methods that hide poor tail-state behavior in aggregate KL."
-        },
-        "slice_state_subset_kl_at_max_steps": {
-          "higher_is_better": false,
-          "coefficient": -0.35,
-          "description": "KL divergence on the slice-specific stratified state subset after renormalization, making state-wise overfitting visible."
-        },
-        "slice_state_subset_mass_abs_error_at_max_steps": {
-          "higher_is_better": false,
-          "coefficient": -0.25,
-          "description": "Absolute error in the total probability mass assigned to the slice-specific state subset at the largest scored step budget."
-        },
-        "max_steps": {
-          "higher_is_better": false,
-          "coefficient": -0.1,
-          "description": "Largest scored discretization step count, a machine-independent compute-size constraint."
-        },
-        "max_nfe": {
-          "higher_is_better": false,
-          "coefficient": -0.2,
-          "description": "Largest scored number of function evaluations, penalizing extra solver work independent of wall-clock hardware."
-        },
-        "common_nfe": {
-          "higher_is_better": false,
-          "coefficient": -0.1,
-          "description": "Largest NFE budget shared by all scored methods for matched-compute comparison."
+        "convergence_order": {
+          "higher_is_better": true,
+          "coefficient": 0.5,
+          "description": "Negative log-log slope of the instance-geometric-mean pair KL against NFE (8-64), after removing the first-order finite-sample floor (224 / 2n)."
         }
       },
       "results": {

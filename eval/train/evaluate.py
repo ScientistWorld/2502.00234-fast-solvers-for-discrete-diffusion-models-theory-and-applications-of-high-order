@@ -17,7 +17,10 @@ import sys
 import time
 from pathlib import Path
 
-import numpy as np
+for _var in ("OMP_NUM_THREADS", "OPENBLAS_NUM_THREADS", "MKL_NUM_THREADS"):
+    os.environ.setdefault(_var, "1")
+
+import numpy as np  # noqa: E402
 
 if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
@@ -29,6 +32,8 @@ from eval.train.instances import (  # noqa: E402
     NUM_STATES,
     Oracle,
     exact_marginals,
+    likelihood_profile,
+    log_prob,
     make_instance,
     site_pairs,
 )
@@ -42,19 +47,43 @@ from eval.train.metrics import (  # noqa: E402
 EXPERIMENT = "multisite_reverse_ctmc"
 SLICE = "train"
 INSTANCE_SEEDS = [20250201, 20250202, 20250203, 20250204]
-NFE_BUDGETS = [32, 64, 128, 256]
+NFE_BUDGETS = [8, 16, 32, 64]
 NUM_SAMPLES = 50_000
+PROFILE_BINS = 50
+PROFILE_REFERENCE_SAMPLES = 1_000_000
 RUN_TIMEOUT_SECONDS = 1800.0
 SEED_BASE = 7_340_000
 
 
+class Scorer:
+    """Ground truth for one instance: oracle, exact marginals, profile bins."""
+
+    def __init__(self, seed: int):
+        self.inst = make_instance(seed, NUM_SITES, NUM_STATES, horizon=HORIZON)
+        self.oracle = Oracle(self.inst)
+        self.site, self.pair = exact_marginals(self.inst)
+        self.pairs = site_pairs(self.inst.num_sites)
+        self.edges, self.probs = likelihood_profile(
+            self.inst,
+            np.random.default_rng([seed, 99]),
+            PROFILE_REFERENCE_SAMPLES,
+            PROFILE_BINS,
+        )
+
+    def score(self, samples: np.ndarray) -> dict[str, float]:
+        return sample_kls(
+            samples,
+            self.site,
+            self.pair,
+            self.pairs,
+            log_prob(self.inst, samples),
+            self.edges,
+            self.probs,
+        )
+
+
 def _instances():
-    out = []
-    for seed in INSTANCE_SEEDS:
-        inst = make_instance(seed, NUM_SITES, NUM_STATES, horizon=HORIZON)
-        site, pair = exact_marginals(inst)
-        out.append((inst, Oracle(inst), site, pair))
-    return out
+    return [Scorer(seed) for seed in INSTANCE_SEEDS]
 
 
 def run_seeds(instance: int, budget: int, seed_offset: int) -> tuple[int, int]:
@@ -97,7 +126,8 @@ def evaluate_solver(file, name, instances, seed_offset=0, log=True):
     floor = pair_kl_floor(NUM_STATES, NUM_SAMPLES)
     if name is None:
         return failure_metrics(NFE_BUDGETS), {"status": "failed", "reason": "no solvers listed"}
-    for i, (inst, oracle, site, pair) in enumerate(instances):
+    for i, scorer in enumerate(instances):
+        inst = scorer.inst
         for budget in NFE_BUDGETS:
             init_seed, solver_seed = run_seeds(i, budget, seed_offset)
             x0 = np.random.default_rng(init_seed).integers(
@@ -105,7 +135,7 @@ def evaluate_solver(file, name, instances, seed_offset=0, log=True):
             )
             try:
                 samples, info = harness.run_solver(
-                    file, name, oracle, x0, budget, solver_seed, RUN_TIMEOUT_SECONDS
+                    file, name, scorer.oracle, x0, budget, solver_seed, RUN_TIMEOUT_SECONDS
                 )
             except Exception as exc:  # noqa: BLE001
                 reason = f"instance {i}, budget {budget}: {exc}"
@@ -116,13 +146,14 @@ def evaluate_solver(file, name, instances, seed_offset=0, log=True):
                     "reason": reason[-2000:],
                     "runs": diag_runs,
                 }
-            kls = sample_kls(samples, site, pair, site_pairs(inst.num_sites))
+            kls = scorer.score(samples)
             runs[(i, budget)] = kls
             diag_runs.append({"instance": i, "nfe_budget": budget, **kls, **info})
             if log:
                 print(
                     f"[{SLICE}] {name} inst={i} nfe={budget}: pair_kl={kls['pair_kl']:.5g} "
-                    f"site_kl={kls['site_kl']:.5g} used={info['nfe_used']} "
+                    f"loglik_kl={kls['loglik_kl']:.5g} site_kl={kls['site_kl']:.5g} "
+                    f"used={info['nfe_used']} "
                     f"{info['seconds']}s",
                     file=sys.stderr,
                     flush=True,
@@ -157,6 +188,7 @@ def scores_document(results, diagnostics, seed_offset=0):
             "horizon": HORIZON,
             "nfe_budgets": NFE_BUDGETS,
             "num_samples": NUM_SAMPLES,
+            "likelihood_profile_bins": PROFILE_BINS,
             "seed_offset": seed_offset,
         },
         "experiments": {EXPERIMENT: {"results": results}},

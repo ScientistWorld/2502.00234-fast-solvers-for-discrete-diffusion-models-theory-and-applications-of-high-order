@@ -1,16 +1,12 @@
 #!/bin/bash
-# Run the paper's theta-RK-2 and theta-Trapezoidal solvers on the toy CTMC.
+# The paper's samplers need no training.  They are registered in
+# method/fast_solvers/samplers.py (SOLVERS) and run by the evaluators, which
+# own the problem instances and count intensity evaluations.  This script
+# scores only the paper's samplers on the public train instances.
 
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 cd "$REPO_ROOT"
-export PYTHONPATH="$REPO_ROOT:${PYTHONPATH:-}"
-
-python method/run_toy.py \
-  --output-dir outputs/toy \
-  --samples "${SAMPLES:-50000}" \
-  --steps "${METHOD_STEPS:-8,16,32,64}" \
-  --horizon "${HORIZON:-12}" \
-  --theta "${THETA:-0.5}" \
-  --seed "${METHOD_SEED:-12345}"
+mkdir -p outputs
+bash scripts/evaluate_train.sh --only theta_rk2 theta_trapezoidal --scores outputs/method_train_scores.json
