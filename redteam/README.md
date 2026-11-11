@@ -33,5 +33,15 @@ Rank delta uses absolute coefficient magnitudes, `higher_is_better`, experiment
 weight, and population standard deviations over the listed audit attempts.
 The reference delta is zero. The future ranking population is unknown, so
 `summary.json` names the normalization cohort and also reports a separate
-quality-only cohort. Raw metric vectors and per-metric contributions make the
-results reproducible with other normalization populations.
+quality-only cohort for genuine methods. For each shortcut's secondary
+sensitivity score, that shortcut is added to the quality cohort before
+computing standard deviations. These secondary scores consequently do not
+share one normalization population. Raw metric vectors and per-metric
+contributions make the results reproducible with other populations. Failed
+test exits have null rank deltas, never a claimed zero-score success.
+
+The two CPU jobs ran 24 attempts. `job_evidence/` retains their logs and job
+metadata; `summary.json` and `results.md` contain the final recalculation.
+Earlier score tables printed in the first job's log use an earlier cohort;
+its secondary shortcut scores were subsequently corrected to include the
+shortcut in the normalization population.

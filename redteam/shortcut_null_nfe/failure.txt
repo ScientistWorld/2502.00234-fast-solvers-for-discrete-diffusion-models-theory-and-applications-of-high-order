@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/home/user/eval/test/evaluate_toy_split.py", line 188, in <module>
+    main()
+  File "/home/user/eval/test/evaluate_toy_split.py", line 164, in main
+    results = {name: _method_metrics(methods[name]) for name in method_names}
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/eval/test/evaluate_toy_split.py", line 164, in <dictcomp>
+    results = {name: _method_metrics(methods[name]) for name in method_names}
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/eval/test/evaluate_toy_split.py", line 141, in _method_metrics
+    "max_nfe": float(selected_run.get("nfe", max_steps)),
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: float() argument must be a string or a real number, not 'NoneType'

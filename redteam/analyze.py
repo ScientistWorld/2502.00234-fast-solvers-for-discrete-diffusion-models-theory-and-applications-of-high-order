@@ -88,7 +88,8 @@ def main():
         qscore, qcontrib = rank(v, sensitivity_scale)
         entry = {'test_exit': statuses[name].get('test_exit'),
                  'train_exit': statuses[name].get('train_exit'),
-                 'score_delta': score, 'quality_cohort_score_delta': qscore,
+                 'score_delta': score if statuses[name].get('test_exit') == 0 else None,
+                 'quality_cohort_score_delta': qscore if statuses[name].get('test_exit') == 0 else None,
                  'metrics': v, 'contributions': contributions,
                  'quality_cohort_contributions': qcontrib,
                  'quality_sensitivity_cohort': ['original_reference']+sensitivity_cohort,
@@ -142,14 +143,16 @@ def main():
             'test_methods': results(read(p/'scores_test.json'))}
     summary['reproduction_check'] = paper_check
     (BASE/'summary.json').write_text(json.dumps(summary, indent=2))
-    lines = ['| Attempt | test exit | rank delta (audit cohort) | rank delta (quality cohort) | order | KL@max | max NFE |',
+    lines = ['| Attempt | test exit | rank delta (audit cohort) | rank delta (quality sensitivity) | order | KL@max | max NFE |',
              '|---|---:|---:|---:|---:|---:|---:|']
     for n, entry in summary['attempts'].items():
         v = entry['metrics']
         def fmt(key):
             return f'{v[key]:.8g}' if key in v else 'missing'
-        lines.append(f"| {n} | {entry['test_exit']} | {entry['score_delta']:.6f} | "
-                     f"{entry['quality_cohort_score_delta']:.6f} | {fmt('convergence_order')} | "
+        def rank_fmt(key):
+            return f'{entry[key]:.6f}' if entry[key] is not None else 'invalid'
+        lines.append(f"| {n} | {entry['test_exit']} | {rank_fmt('score_delta')} | "
+                     f"{rank_fmt('quality_cohort_score_delta')} | {fmt('convergence_order')} | "
                      f"{fmt('kl_at_max_steps')} | {fmt('max_nfe')} |")
     (BASE/'results.md').write_text('\n'.join(lines)+'\n')
     print('\n'.join(lines), flush=True)

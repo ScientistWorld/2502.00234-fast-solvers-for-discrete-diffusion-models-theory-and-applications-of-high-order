@@ -1,8 +1,8 @@
 {
   "test_exit": 1,
   "train_exit": 1,
-  "score_delta": 0,
-  "quality_cohort_score_delta": 0,
+  "score_delta": null,
+  "quality_cohort_score_delta": null,
   "metrics": {},
   "contributions": {},
   "quality_cohort_contributions": {},

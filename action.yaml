@@ -1,4 +1,8 @@
-action: submit
+# Once you set action to 'submit' or 'done', STOP immediately.
+# Do NOT sleep, poll, or wait for jobs. The system reads this file
+# only after your turn ends.
+action: pending
 gpus: 0
 test: false
-notes: "Audit follow-up: two additional seeds and original million-sample setting for genuine exponential-midpoint solver; recompute cohort-normalized ranks."
+milestone: core_claim
+notes: ""

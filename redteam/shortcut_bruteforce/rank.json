@@ -1,7 +1,7 @@
 {
   "test_exit": 0,
   "train_exit": 0,
-  "score_delta": 0.2370795908268631,
+  "score_delta": 0.23707959082686308,
   "quality_cohort_score_delta": -1.4070240190032832,
   "metrics": {
     "convergence_order": -0.07103590892978925,

@@ -1,0 +1,58 @@
+[hive] This stdout log is managed by Hive.
+[hive] job_id: 6c189393
+[hive] host: node
+[hive] node_id: 5b56c1bb00c851f2c3f93b346fd15ddec87104a85e26c62af4985535
+[hive] user: nexus/user (remote)
+[hive] resource: gpu-cpu
+[hive] gpus: 0
+[hive] cpus: 1
+[hive] workdir: /home/user
+[hive] timeout_sec: 21600
+[hive] started_at: 2026-11-10 22:55:28 EST
+[hive] command: apptainer exec --containall --cleanenv --env HF_HOME=/home/user/shared/hf_cache --env TRANSFORMERS_CACHE=/home/user/shared/hf_cache --env HF_DATASETS_CACHE=/home/user/shared/hf_cache/datasets --env TORCH_HOME=/home/user/shared/hf_cache/torch --bind /home/user/scratch/AgentWorkspaces/workspaces/2502.00234:/home/user --overlay /home/user/scratch/AgentWorkspaces/workspaces/2502.00234/environment/overlay.img:ro --bind /home/user/scratch/AgentWorkspaces/shared/datasets:/home/user/shared/datasets:ro --bind /home/user/scratch/AgentWorkspaces/shared/models:/home/user/shared/models:ro --bind /home/user/scratch/AgentWorkspaces/shared/hf_cache:/home/user/shared/hf_cache /home/user/scratch/AgentWorkspaces/workspaces/2502.00234/environment/container.sif bash -c 'cd /home/user && bash /home/user/scripts/run.sh'
+{"variant": "reference_seed_12345", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "samples": 50000, "seed": 12345, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 44.44500155199785}
+{"variant": "reference_seed_12346", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "samples": 50000, "seed": 12346, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 21.077943187003257}
+{"variant": "reference_seed_12347", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "samples": 50000, "seed": 12347, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 40.3403663479985}
+{"variant": "better_more_samples", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "samples": 1000000, "seed": 12345, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 404.13262901300914}
+{"variant": "better_jump_alignment", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 34.22606953600189}
+{"variant": "better_exponential_midpoint", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 4.7988620060059475}
+{"variant": "weaker_no_second_stage", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 15.422027876993525}
+{"variant": "shortcut_visible_answers", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 5.88981292299286}
+{"variant": "shortcut_budget_metadata", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 3.3596583729959093}
+{"variant": "shortcut_relabel_grid", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 3.1675924489973113}
+{"variant": "shortcut_method_selector", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 5.047073862006073}
+{"variant": "shortcut_empty_method", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 4.160275154994451}
+{"variant": "shortcut_replace_target", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 3.7523420279903803}
+{"variant": "shortcut_move_baseline", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 4.804609504004475}
+{"variant": "shortcut_forged_scores", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 6.6621437139983755}
+{"variant": "shortcut_null_nfe", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 1, "test_exit": 1, "elapsed_seconds": 11.240565126005094}
+{"variant": "shortcut_negative_distribution", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 2.597693450996303}
+{"variant": "shortcut_empty_distribution", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 1, "test_exit": 1, "elapsed_seconds": 5.223676413006615}
+{"variant": "shortcut_constant_input", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 5.913729856998543}
+{"variant": "shortcut_bruteforce", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 4.921686411995324}
+{"variant": "shortcut_bad_task_slope", "test_invocation": "bash scripts/evaluate_test.sh", "test_arguments": [], "fresh_test_process": true, "preparation_exit": 0, "train_exit": 0, "test_exit": 0, "elapsed_seconds": 3.437222513006418}
+| Attempt | test exit | rank delta (audit cohort) | rank delta (quality cohort) | order | KL@max | max NFE |
+|---|---:|---:|---:|---:|---:|---:|
+| better_exponential_midpoint | 0 | 0.184177 | -1.412777 | 1.2890002 | 0.00017656627 | 64 |
+| better_jump_alignment | 0 | -0.077006 | -0.534500 | 2.3251163 | 0.00060241414 | 128 |
+| better_more_samples | 0 | -0.064967 | -0.929824 | 2.1570487 | 0.00070237511 | 128 |
+| reference_seed_12345 | 0 | 0.000000 | 0.000000 | 2.3615459 | 0.00051372644 | 128 |
+| reference_seed_12346 | 0 | -0.136112 | -1.585348 | 2.0656725 | 0.00077259522 | 128 |
+| reference_seed_12347 | 0 | -0.089988 | -1.466778 | 2.0320764 | 0.00091703804 | 128 |
+| shortcut_bad_task_slope | 0 | -2.910127 | 5002908.486106 | 1930123.4 | 0.12040402 | 0 |
+| shortcut_bruteforce | 0 | 0.226754 | -4.320242 | -0.071035909 | 0.00016358677 | 0 |
+| shortcut_budget_metadata | 0 | 0.873128 | 7216878365.794084 | 2.3615459 | 0.00051372644 | -1e+12 |
+| shortcut_constant_input | 0 | -7.124032 | -95.655412 | 3.6948627e-16 | 0.12755165 | 0 |
+| shortcut_empty_distribution | 1 | 0.000000 | 0.000000 | missing | missing | missing |
+| shortcut_empty_method | 0 | 0.000000 | 0.000000 | missing | missing | missing |
+| shortcut_forged_scores | 0 | -7.124032 | -96.579173 | 3.6948627e-16 | 0.12755165 | 128 |
+| shortcut_method_selector | 0 | 0.000000 | 0.000000 | missing | missing | missing |
+| shortcut_move_baseline | 0 | 0.000000 | 0.000000 | 2.3615459 | 0.00051372644 | 128 |
+| shortcut_negative_distribution | 0 | -7.382940 | -171.151575 | 1.7120896e-16 | 0.37526605 | 0 |
+| shortcut_null_nfe | 1 | 0.000000 | 0.000000 | missing | missing | missing |
+| shortcut_relabel_grid | 0 | 0.000006 | 6.121274 | 4.7230918 | 0.00051372644 | 128 |
+| shortcut_replace_target | 0 | 0.343583 | 17.320969 | 7.997618 | 7.2184475e-09 | 0 |
+| shortcut_visible_answers | 0 | 0.342721 | 17.197712 | 7.9529385 | 1.1943902e-08 | 0 |
+| weaker_no_second_stage | 0 | -1.343401 | -12.204472 | 1.4629612 | 0.0087499768 | 64 |
+Seed rank spread: {'min': -0.13611187520868245, 'max': 0.0, 'range': 0.13611187520868245}
+Quality-only seed rank spread: {'min': -1.5853478573096198, 'max': 0.0, 'range': 1.5853478573096198}

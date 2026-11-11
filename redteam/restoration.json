@@ -1,0 +1,23 @@
+{
+  "initial_commit": "2a1030e65f7248f3d728ad263948197ed4eb5ed2",
+  "indexed_changes_outside_redteam_and_report": [],
+  "original_files_verified_sha256": {
+    "scripts/run.sh": "bb0db4ba13cca823c16768ba2ecd141659a2d4de2426ce7b257a5b30072adfba",
+    "data/toy_discrete_diffusion/model.py": "61a103ef60eb73a952ed7cef366234a921bed210c6751beab47471d240a587c1",
+    "scoring/scores_test.json": "c0f604e5833e023f15b767a442a14cf6aff5f915d3848f4200cea3229b6e8cb7",
+    "scoring/scores_train.json": "8311aa659c4a2f0b3a430edc2ede9a03ad55dd6a8d4153d7621ba30a755cfcad",
+    "scripts/evaluate_test.sh": "5fd4b2dc68ca176978b07243a5cac731152e4713e7c4a929dd53036dfb9380a4",
+    "eval/test/evaluate_toy_split.py": "830c5fa440b16911c7db31ae6adabcec2a19f0beb1c73ee85b89be763c325fb2",
+    "eval/train/evaluate_toy_split.py": "5330ff613a3760b9593de36c3da2756b0c292e48f5e77c8bdd9193799a8a41b0"
+  },
+  "preexisting_changes": [
+    " M README.md",
+    " M manifest.json",
+    " D trajectory/turn_0001_raw.jsonl",
+    " D trajectory/turn_0002_raw.jsonl",
+    " D trajectory/turn_0003_raw.jsonl",
+    " D trajectory/turn_0004_raw.jsonl"
+  ],
+  "control_file": "action.yaml restored before required final completion signal",
+  "system_owned_mounts": "README.md and manifest.json are pre-existing device mounts and were left unchanged. The scheduler-added trajectory/session.json was removed from the index and is absent from the workspace; git reported an unlink warning on the system-managed read-only trajectory directory."
+}
