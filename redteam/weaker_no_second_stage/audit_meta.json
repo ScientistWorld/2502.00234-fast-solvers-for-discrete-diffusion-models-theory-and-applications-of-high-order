@@ -1,0 +1,7 @@
+{
+  "variant": "weaker_no_second_stage",
+  "actual_seconds": 8.0904567319958,
+  "state_space_size": 15,
+  "samples": 50000,
+  "global_matrix_evaluations_per_step": 0
+}

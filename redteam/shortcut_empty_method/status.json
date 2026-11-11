@@ -1,0 +1,10 @@
+{
+  "variant": "shortcut_empty_method",
+  "test_invocation": "bash scripts/evaluate_test.sh",
+  "test_arguments": [],
+  "fresh_test_process": true,
+  "preparation_exit": 0,
+  "train_exit": 0,
+  "test_exit": 0,
+  "elapsed_seconds": 4.160275154994451
+}

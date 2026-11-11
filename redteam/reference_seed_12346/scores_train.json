@@ -1,0 +1,71 @@
+{
+  "_meta": {
+    "slice": "train",
+    "artifact_source": "outputs/toy",
+    "split": "even-ranked saved step budgets",
+    "state_indices": [
+      0,
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14
+    ]
+  },
+  "experiments": {
+    "toy_15_state_convergence": {
+      "_slice": "train",
+      "_split": "even-ranked saved step budgets",
+      "_state_indices": [
+        0,
+        2,
+        4,
+        6,
+        8,
+        10,
+        12,
+        14
+      ],
+      "results": {
+        "tau_leaping": {
+          "convergence_order": 1.1126988383394598,
+          "kl_at_max_steps": 0.024485970896737107,
+          "mean_kl": 0.06949605638087779,
+          "mean_total_variation": 0.14204227272727268,
+          "total_variation_at_max_steps": 0.08447727272727269,
+          "worst_state_abs_error_at_max_steps": 0.02461272727272726,
+          "slice_state_subset_kl_at_max_steps": 0.0326026016792602,
+          "slice_state_subset_mass_abs_error_at_max_steps": 0.020032727272727313,
+          "max_steps": 32.0,
+          "max_nfe": 32.0
+        },
+        "theta_rk2": {
+          "convergence_order": 1.217733114105803,
+          "kl_at_max_steps": 0.01835860299809996,
+          "mean_kl": 0.05883373401455701,
+          "mean_total_variation": 0.1283472727272727,
+          "total_variation_at_max_steps": 0.07232727272727271,
+          "worst_state_abs_error_at_max_steps": 0.018262727272727278,
+          "slice_state_subset_kl_at_max_steps": 0.02400793116617215,
+          "slice_state_subset_mass_abs_error_at_max_steps": 0.015532727272727365,
+          "max_steps": 32.0,
+          "max_nfe": 64.0
+        },
+        "theta_trapezoidal": {
+          "convergence_order": 1.8051241298385126,
+          "kl_at_max_steps": 0.004021110481032242,
+          "mean_kl": 0.02656380762052608,
+          "mean_total_variation": 0.07609409090909089,
+          "total_variation_at_max_steps": 0.028290909090909058,
+          "worst_state_abs_error_at_max_steps": 0.008582727272727273,
+          "slice_state_subset_kl_at_max_steps": 0.006472331735113208,
+          "slice_state_subset_mass_abs_error_at_max_steps": 0.002592727272727302,
+          "max_steps": 32.0,
+          "max_nfe": 64.0
+        }
+      }
+    }
+  }
+}

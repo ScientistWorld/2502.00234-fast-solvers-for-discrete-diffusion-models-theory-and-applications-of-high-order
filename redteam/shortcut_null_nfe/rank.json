@@ -1,0 +1,28 @@
+{
+  "test_exit": 1,
+  "train_exit": 1,
+  "score_delta": 0,
+  "quality_cohort_score_delta": 0,
+  "metrics": {},
+  "contributions": {},
+  "quality_cohort_contributions": {},
+  "scored_methods": [
+    "theta_trapezoidal"
+  ],
+  "absent_scored_metrics": [
+    "common_nfe",
+    "convergence_order",
+    "kl_at_common_nfe",
+    "kl_at_max_steps",
+    "max_nfe",
+    "max_steps",
+    "mean_kl",
+    "mean_total_variation",
+    "slice_state_subset_kl_at_max_steps",
+    "slice_state_subset_mass_abs_error_at_max_steps",
+    "total_variation_at_common_nfe",
+    "total_variation_at_max_steps",
+    "worst_state_abs_error_at_max_steps"
+  ],
+  "qualification": "failed test; numeric skipped-value result is not a valid success"
+}

@@ -1,0 +1,7 @@
+{
+  "variant": "better_jump_alignment",
+  "actual_seconds": 25.07465639799193,
+  "state_space_size": 15,
+  "samples": 50000,
+  "global_matrix_evaluations_per_step": 0
+}

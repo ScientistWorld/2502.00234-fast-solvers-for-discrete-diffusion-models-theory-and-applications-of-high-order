@@ -1,0 +1,7 @@
+{
+  "variant": "shortcut_bruteforce",
+  "actual_seconds": 0.761215654987609,
+  "state_space_size": 15,
+  "samples": 50000,
+  "global_matrix_evaluations_per_step": 0
+}

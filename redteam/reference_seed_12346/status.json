@@ -1,0 +1,12 @@
+{
+  "variant": "reference_seed_12346",
+  "test_invocation": "bash scripts/evaluate_test.sh",
+  "test_arguments": [],
+  "fresh_test_process": true,
+  "samples": 50000,
+  "seed": 12346,
+  "preparation_exit": 0,
+  "train_exit": 0,
+  "test_exit": 0,
+  "elapsed_seconds": 21.077943187003257
+}

@@ -1,0 +1,10 @@
+{
+  "variant": "shortcut_null_nfe",
+  "test_invocation": "bash scripts/evaluate_test.sh",
+  "test_arguments": [],
+  "fresh_test_process": true,
+  "preparation_exit": 0,
+  "train_exit": 1,
+  "test_exit": 1,
+  "elapsed_seconds": 11.240565126005094
+}
