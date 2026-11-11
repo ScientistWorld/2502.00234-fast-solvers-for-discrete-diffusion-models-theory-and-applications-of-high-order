@@ -1,5 +1,5 @@
 action: submit
 gpus: 0
-test: false
+test: true
 milestone: core_claim
-notes: "Hardened gym full run: oracle exactness check; reference/baselines through hidden test and train; discovery/failure demo; shortcut, seed-noise and better/weaker variant attempts through hidden test; paper Fig.2 toy (unscored); rank analysis."
+notes: "Calibrate target transition sparsity (0.1/0.2/0.4): KL vs NFE for reference, baselines, grid variants and data-end Gibbs alternatives."

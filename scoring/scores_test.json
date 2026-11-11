@@ -1,70 +1,554 @@
 {
   "_meta": {
     "slice": "test",
-    "artifact_source": "outputs/toy",
-    "train_scores": "scoring/scores_train.json",
-    "split": "odd-ranked saved step budgets",
-    "state_indices": [
-      1,
-      3,
-      5,
-      7,
-      9,
-      11,
-      13
-    ]
+    "instances": 4,
+    "num_sites": 10,
+    "num_states": 15,
+    "horizon": 12.0,
+    "nfe_budgets": [
+      8,
+      16,
+      32,
+      64
+    ],
+    "num_samples": 50000,
+    "likelihood_profile_bins": 50,
+    "seed_offset": 0
   },
   "experiments": {
-    "toy_15_state_convergence": {
-      "_slice": "test",
-      "_split": "odd-ranked saved step budgets",
-      "_state_indices": [
-        1,
-        3,
-        5,
-        7,
-        9,
-        11,
-        13
-      ],
+    "multisite_reverse_ctmc": {
       "results": {
-        "tau_leaping": {
-          "convergence_order": 1.5454134781781097,
-          "kl_at_max_steps": 0.007808503859155706,
-          "mean_kl": 0.03716786796184959,
-          "mean_total_variation": 0.09849227272727269,
-          "total_variation_at_max_steps": 0.047217272727272684,
-          "worst_state_abs_error_at_max_steps": 0.010832727272727244,
-          "slice_state_subset_kl_at_max_steps": 0.005075269699457376,
-          "slice_state_subset_mass_abs_error_at_max_steps": 0.0074127272727272375,
-          "max_steps": 64.0,
-          "max_nfe": 64.0
-        },
         "theta_rk2": {
-          "convergence_order": 1.505251199249038,
-          "kl_at_max_steps": 0.006442677362286515,
-          "mean_kl": 0.029180335876046806,
-          "mean_total_variation": 0.08321727272727268,
-          "total_variation_at_max_steps": 0.04042727272727268,
-          "worst_state_abs_error_at_max_steps": 0.010862727272727277,
-          "slice_state_subset_kl_at_max_steps": 0.0031340071714143942,
-          "slice_state_subset_mass_abs_error_at_max_steps": 0.010792727272727232,
-          "max_steps": 64.0,
-          "max_nfe": 128.0
+          "log10_pair_kl_nfe8": -1.0689596562124886,
+          "log10_pair_kl_nfe16": -1.1262667536404436,
+          "log10_pair_kl_nfe32": -1.307151038714374,
+          "log10_pair_kl_nfe64": -1.5983815513755635,
+          "log10_loglik_kl_mean": 0.3253463874348902,
+          "log10_site_kl_mean": -1.8890691551378116,
+          "convergence_order": 0.6190122965519913
         },
         "theta_trapezoidal": {
-          "convergence_order": 2.361545912041969,
-          "kl_at_max_steps": 0.0005137264376515751,
-          "mean_kl": 0.007040994318617097,
-          "mean_total_variation": 0.03437590909090909,
-          "total_variation_at_max_steps": 0.009554545454545437,
-          "worst_state_abs_error_at_max_steps": 0.002942727272727274,
-          "slice_state_subset_kl_at_max_steps": 0.0002751144790907904,
-          "slice_state_subset_mass_abs_error_at_max_steps": 0.0003072727272727116,
-          "max_steps": 64.0,
-          "max_nfe": 128.0
+          "log10_pair_kl_nfe8": -1.1200204558126012,
+          "log10_pair_kl_nfe16": -1.4064474977266985,
+          "log10_pair_kl_nfe32": -1.8116256730313414,
+          "log10_pair_kl_nfe64": -2.227603915148313,
+          "log10_loglik_kl_mean": 0.0033672755959636563,
+          "log10_site_kl_mean": -2.3602660377893296,
+          "convergence_order": 1.4464868076728548
+        },
+        "tau_leaping": {
+          "log10_pair_kl_nfe8": -1.1162264069897199,
+          "log10_pair_kl_nfe16": -1.3081597307943156,
+          "log10_pair_kl_nfe32": -1.6279739222627045,
+          "log10_pair_kl_nfe64": -1.9960865086967363,
+          "log10_loglik_kl_mean": 0.13443917444067366,
+          "log10_site_kl_mean": -2.2042064276086943,
+          "convergence_order": 1.0873144821065388
         }
       }
+    }
+  },
+  "_diagnostics": {
+    "theta_rk2": {
+      "status": "ok",
+      "runs": [
+        {
+          "instance": 0,
+          "nfe_budget": 8,
+          "site_kl": 0.023640233363019746,
+          "pair_kl": 0.08187249094677933,
+          "loglik_kl": 2.859790340075875,
+          "nfe_used": 8,
+          "oracle_calls": 8,
+          "seconds": 24.586
+        },
+        {
+          "instance": 0,
+          "nfe_budget": 16,
+          "site_kl": 0.01948612194664128,
+          "pair_kl": 0.0715483120930554,
+          "loglik_kl": 2.7659305827223015,
+          "nfe_used": 16,
+          "oracle_calls": 16,
+          "seconds": 28.205
+        },
+        {
+          "instance": 0,
+          "nfe_budget": 32,
+          "site_kl": 0.01054369563720049,
+          "pair_kl": 0.04627387756609114,
+          "loglik_kl": 2.034935095358644,
+          "nfe_used": 32,
+          "oracle_calls": 32,
+          "seconds": 45.895
+        },
+        {
+          "instance": 0,
+          "nfe_budget": 64,
+          "site_kl": 0.004057944911031987,
+          "pair_kl": 0.02334831998313982,
+          "loglik_kl": 1.1788305115611206,
+          "nfe_used": 64,
+          "oracle_calls": 64,
+          "seconds": 84.829
+        },
+        {
+          "instance": 1,
+          "nfe_budget": 8,
+          "site_kl": 0.030380874849438733,
+          "pair_kl": 0.10146224842693054,
+          "loglik_kl": 2.985639865396102,
+          "nfe_used": 8,
+          "oracle_calls": 8,
+          "seconds": 29.025
+        },
+        {
+          "instance": 1,
+          "nfe_budget": 16,
+          "site_kl": 0.025404269227021152,
+          "pair_kl": 0.08873681401768921,
+          "loglik_kl": 2.863586755841454,
+          "nfe_used": 16,
+          "oracle_calls": 16,
+          "seconds": 75.047
+        },
+        {
+          "instance": 1,
+          "nfe_budget": 32,
+          "site_kl": 0.014088643549351718,
+          "pair_kl": 0.057334575920904136,
+          "loglik_kl": 2.1267028627047715,
+          "nfe_used": 32,
+          "oracle_calls": 32,
+          "seconds": 43.693
+        },
+        {
+          "instance": 1,
+          "nfe_budget": 64,
+          "site_kl": 0.006093859841355055,
+          "pair_kl": 0.02970511864805572,
+          "loglik_kl": 1.1961370703851344,
+          "nfe_used": 64,
+          "oracle_calls": 64,
+          "seconds": 77.716
+        },
+        {
+          "instance": 2,
+          "nfe_budget": 8,
+          "site_kl": 0.02007740002396514,
+          "pair_kl": 0.07180284808166044,
+          "loglik_kl": 2.741039416675347,
+          "nfe_used": 8,
+          "oracle_calls": 8,
+          "seconds": 15.69
+        },
+        {
+          "instance": 2,
+          "nfe_budget": 16,
+          "site_kl": 0.016728163034057674,
+          "pair_kl": 0.06352799047810118,
+          "loglik_kl": 2.6730327179161524,
+          "nfe_used": 16,
+          "oracle_calls": 16,
+          "seconds": 20.96
+        },
+        {
+          "instance": 2,
+          "nfe_budget": 32,
+          "site_kl": 0.010099119933853188,
+          "pair_kl": 0.0433265652436487,
+          "loglik_kl": 2.0548824418137053,
+          "nfe_used": 32,
+          "oracle_calls": 32,
+          "seconds": 37.506
+        },
+        {
+          "instance": 2,
+          "nfe_budget": 64,
+          "site_kl": 0.004078837693445587,
+          "pair_kl": 0.021829018002336942,
+          "loglik_kl": 1.1893085466514552,
+          "nfe_used": 64,
+          "oracle_calls": 64,
+          "seconds": 204.436
+        },
+        {
+          "instance": 3,
+          "nfe_budget": 8,
+          "site_kl": 0.02551142849701759,
+          "pair_kl": 0.08883359095422545,
+          "loglik_kl": 2.92244336922921,
+          "nfe_used": 8,
+          "oracle_calls": 8,
+          "seconds": 12.662
+        },
+        {
+          "instance": 3,
+          "nfe_budget": 16,
+          "site_kl": 0.02122115299552578,
+          "pair_kl": 0.07749338698958627,
+          "loglik_kl": 2.7898791906415124,
+          "nfe_used": 16,
+          "oracle_calls": 16,
+          "seconds": 28.83
+        },
+        {
+          "instance": 3,
+          "nfe_budget": 32,
+          "site_kl": 0.011921721492369138,
+          "pair_kl": 0.0513912387448734,
+          "loglik_kl": 2.162568819440222,
+          "nfe_used": 32,
+          "oracle_calls": 32,
+          "seconds": 60.605
+        },
+        {
+          "instance": 3,
+          "nfe_budget": 64,
+          "site_kl": 0.005106581949153755,
+          "pair_kl": 0.026690251585347966,
+          "loglik_kl": 1.2320455111122535,
+          "nfe_used": 64,
+          "oracle_calls": 64,
+          "seconds": 87.511
+        }
+      ],
+      "file": "method/fast_solvers/samplers.py",
+      "seconds": 880.0
+    },
+    "theta_trapezoidal": {
+      "status": "ok",
+      "runs": [
+        {
+          "instance": 0,
+          "nfe_budget": 8,
+          "site_kl": 0.019804616393749374,
+          "pair_kl": 0.07262932872473038,
+          "loglik_kl": 2.781963015611831,
+          "nfe_used": 8,
+          "oracle_calls": 8,
+          "seconds": 12.807
+        },
+        {
+          "instance": 0,
+          "nfe_budget": 16,
+          "site_kl": 0.007967149063558185,
+          "pair_kl": 0.03648526940823819,
+          "loglik_kl": 1.706022901461326,
+          "nfe_used": 16,
+          "oracle_calls": 16,
+          "seconds": 44.799
+        },
+        {
+          "instance": 0,
+          "nfe_budget": 32,
+          "site_kl": 0.002316593326405899,
+          "pair_kl": 0.014326073345396389,
+          "loglik_kl": 0.7657653415792984,
+          "nfe_used": 32,
+          "oracle_calls": 32,
+          "seconds": 92.107
+        },
+        {
+          "instance": 0,
+          "nfe_budget": 64,
+          "site_kl": 0.000642822674753625,
+          "pair_kl": 0.0055239956925286346,
+          "loglik_kl": 0.267792249212355,
+          "nfe_used": 64,
+          "oracle_calls": 64,
+          "seconds": 212.623
+        },
+        {
+          "instance": 1,
+          "nfe_budget": 8,
+          "site_kl": 0.025602168980065898,
+          "pair_kl": 0.08947611953318718,
+          "loglik_kl": 2.83894661645863,
+          "nfe_used": 8,
+          "oracle_calls": 8,
+          "seconds": 19.393
+        },
+        {
+          "instance": 1,
+          "nfe_budget": 16,
+          "site_kl": 0.0107839898670359,
+          "pair_kl": 0.045938289444961394,
+          "loglik_kl": 1.7459524016883718,
+          "nfe_used": 16,
+          "oracle_calls": 16,
+          "seconds": 16.815
+        },
+        {
+          "instance": 1,
+          "nfe_budget": 32,
+          "site_kl": 0.003302940831417564,
+          "pair_kl": 0.018044961211741796,
+          "loglik_kl": 0.7801497807839497,
+          "nfe_used": 32,
+          "oracle_calls": 32,
+          "seconds": 36.252
+        },
+        {
+          "instance": 1,
+          "nfe_budget": 64,
+          "site_kl": 0.0007902562275014839,
+          "pair_kl": 0.006454702305191578,
+          "loglik_kl": 0.2730083516019661,
+          "nfe_used": 64,
+          "oracle_calls": 64,
+          "seconds": 96.875
+        },
+        {
+          "instance": 2,
+          "nfe_budget": 8,
+          "site_kl": 0.017399477074415443,
+          "pair_kl": 0.06506878134550612,
+          "loglik_kl": 2.6469748750863773,
+          "nfe_used": 8,
+          "oracle_calls": 8,
+          "seconds": 15.731
+        },
+        {
+          "instance": 2,
+          "nfe_budget": 16,
+          "site_kl": 0.007590160485313203,
+          "pair_kl": 0.03454496164148554,
+          "loglik_kl": 1.7226948504346304,
+          "nfe_used": 16,
+          "oracle_calls": 16,
+          "seconds": 30.877
+        },
+        {
+          "instance": 2,
+          "nfe_budget": 32,
+          "site_kl": 0.0023336346822228618,
+          "pair_kl": 0.013555445223585089,
+          "loglik_kl": 0.7707408678007283,
+          "nfe_used": 32,
+          "oracle_calls": 32,
+          "seconds": 37.527
+        },
+        {
+          "instance": 2,
+          "nfe_budget": 64,
+          "site_kl": 0.0007521962946631028,
+          "pair_kl": 0.0054758304859707195,
+          "loglik_kl": 0.2723592524802015,
+          "nfe_used": 64,
+          "oracle_calls": 64,
+          "seconds": 118.689
+        },
+        {
+          "instance": 3,
+          "nfe_budget": 8,
+          "site_kl": 0.021373090412992107,
+          "pair_kl": 0.07829361257424251,
+          "loglik_kl": 2.7894329454577207,
+          "nfe_used": 8,
+          "oracle_calls": 8,
+          "seconds": 15.053
+        },
+        {
+          "instance": 3,
+          "nfe_budget": 16,
+          "site_kl": 0.009069015634996392,
+          "pair_kl": 0.04088207372387967,
+          "loglik_kl": 1.7771680483454535,
+          "nfe_used": 16,
+          "oracle_calls": 16,
+          "seconds": 24.93
+        },
+        {
+          "instance": 3,
+          "nfe_budget": 32,
+          "site_kl": 0.0027843003203848827,
+          "pair_kl": 0.01617708987560847,
+          "loglik_kl": 0.7985442371378669,
+          "nfe_used": 32,
+          "oracle_calls": 32,
+          "seconds": 94.393
+        },
+        {
+          "instance": 3,
+          "nfe_budget": 64,
+          "site_kl": 0.000812294124212259,
+          "pair_kl": 0.006295131342202741,
+          "loglik_kl": 0.29077083523796804,
+          "nfe_used": 64,
+          "oracle_calls": 64,
+          "seconds": 115.797
+        }
+      ],
+      "file": "method/fast_solvers/samplers.py",
+      "seconds": 986.7
+    },
+    "tau_leaping": {
+      "status": "ok",
+      "runs": [
+        {
+          "instance": 0,
+          "nfe_budget": 8,
+          "site_kl": 0.01984091340377885,
+          "pair_kl": 0.0730942125549004,
+          "loglik_kl": 2.814233304030939,
+          "nfe_used": 8,
+          "oracle_calls": 8,
+          "seconds": 38.98
+        },
+        {
+          "instance": 0,
+          "nfe_budget": 16,
+          "site_kl": 0.010557931918843222,
+          "pair_kl": 0.04654027587669383,
+          "loglik_kl": 2.0815749347462416,
+          "nfe_used": 16,
+          "oracle_calls": 16,
+          "seconds": 57.98
+        },
+        {
+          "instance": 0,
+          "nfe_budget": 32,
+          "site_kl": 0.00383268744374584,
+          "pair_kl": 0.021966984051030144,
+          "loglik_kl": 1.1414891346866147,
+          "nfe_used": 32,
+          "oracle_calls": 32,
+          "seconds": 55.723
+        },
+        {
+          "instance": 0,
+          "nfe_budget": 64,
+          "site_kl": 0.0013735682529835594,
+          "pair_kl": 0.009715761502706893,
+          "loglik_kl": 0.49518632717884026,
+          "nfe_used": 64,
+          "oracle_calls": 64,
+          "seconds": 184.325
+        },
+        {
+          "instance": 1,
+          "nfe_budget": 8,
+          "site_kl": 0.025988200653314576,
+          "pair_kl": 0.09078663460833288,
+          "loglik_kl": 2.823727877425231,
+          "nfe_used": 8,
+          "oracle_calls": 8,
+          "seconds": 18.773
+        },
+        {
+          "instance": 1,
+          "nfe_budget": 16,
+          "site_kl": 0.014365452570652129,
+          "pair_kl": 0.05829734839044858,
+          "loglik_kl": 2.1140368862183028,
+          "nfe_used": 16,
+          "oracle_calls": 16,
+          "seconds": 30.322
+        },
+        {
+          "instance": 1,
+          "nfe_budget": 32,
+          "site_kl": 0.005235070158058864,
+          "pair_kl": 0.027248385274274495,
+          "loglik_kl": 1.1715988502920924,
+          "nfe_used": 32,
+          "oracle_calls": 32,
+          "seconds": 46.843
+        },
+        {
+          "instance": 1,
+          "nfe_budget": 64,
+          "site_kl": 0.0019114552821903983,
+          "pair_kl": 0.011715106019040893,
+          "loglik_kl": 0.5031126967620636,
+          "nfe_used": 64,
+          "oracle_calls": 64,
+          "seconds": 68.546
+        },
+        {
+          "instance": 2,
+          "nfe_budget": 8,
+          "site_kl": 0.017156984703504418,
+          "pair_kl": 0.0649584082975645,
+          "loglik_kl": 2.679943246072302,
+          "nfe_used": 8,
+          "oracle_calls": 8,
+          "seconds": 52.03
+        },
+        {
+          "instance": 2,
+          "nfe_budget": 16,
+          "site_kl": 0.0097222300721892,
+          "pair_kl": 0.04283549635611547,
+          "loglik_kl": 2.116924399958292,
+          "nfe_used": 16,
+          "oracle_calls": 16,
+          "seconds": 27.768
+        },
+        {
+          "instance": 2,
+          "nfe_budget": 32,
+          "site_kl": 0.0037984429159484316,
+          "pair_kl": 0.020829180823245454,
+          "loglik_kl": 1.1658218065060406,
+          "nfe_used": 32,
+          "oracle_calls": 32,
+          "seconds": 38.316
+        },
+        {
+          "instance": 2,
+          "nfe_budget": 64,
+          "site_kl": 0.0012725586502895638,
+          "pair_kl": 0.008862911265739388,
+          "loglik_kl": 0.49918820278014536,
+          "nfe_used": 64,
+          "oracle_calls": 64,
+          "seconds": 65.307
+        },
+        {
+          "instance": 3,
+          "nfe_budget": 8,
+          "site_kl": 0.02166983990014882,
+          "pair_kl": 0.07953423133252115,
+          "loglik_kl": 2.871366931158694,
+          "nfe_used": 8,
+          "oracle_calls": 8,
+          "seconds": 21.887
+        },
+        {
+          "instance": 3,
+          "nfe_budget": 16,
+          "site_kl": 0.011541297899490618,
+          "pair_kl": 0.05035928068744149,
+          "loglik_kl": 2.1290432061780242,
+          "nfe_used": 16,
+          "oracle_calls": 16,
+          "seconds": 58.927
+        },
+        {
+          "instance": 3,
+          "nfe_budget": 32,
+          "site_kl": 0.004515504057953393,
+          "pair_kl": 0.024678622496467226,
+          "loglik_kl": 1.1831930037269174,
+          "nfe_used": 32,
+          "oracle_calls": 32,
+          "seconds": 36.383
+        },
+        {
+          "instance": 3,
+          "nfe_budget": 64,
+          "site_kl": 0.0014405023068745815,
+          "pair_kl": 0.010276719324421755,
+          "loglik_kl": 0.5088601062715452,
+          "nfe_used": 64,
+          "oracle_calls": 64,
+          "seconds": 139.485
+        }
+      ],
+      "file": "baseline/tau_leaping.py",
+      "seconds": 944.8
     }
   }
 }
