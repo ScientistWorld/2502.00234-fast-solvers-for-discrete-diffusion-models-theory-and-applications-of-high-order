@@ -32,16 +32,16 @@ def sample_kls(
     site_marginals: np.ndarray,
     pair_marginals: np.ndarray,
     pairs: list[tuple[int, int]],
-    sample_log_prob: np.ndarray,
-    profile_edges: np.ndarray,
+    profile_cells: np.ndarray,
     profile_probs: np.ndarray,
 ) -> dict[str, float]:
     """KL from the target to the samples on three evaluator-fixed projections.
 
-    site_kl:    mean over sites of KL on the 15-state site marginal.
-    pair_kl:    mean over all site pairs of KL on the 225-cell pair marginal.
-    loglik_kl:  KL on equal-mass bins of the exact data log-likelihood
-                log p0(x), which sees errors in the full joint configuration.
+    site_kl:     mean over sites of KL on the 15-state site marginal.
+    pair_kl:     mean over all site pairs of KL on the 225-cell pair marginal.
+    profile_kl:  KL on the joint (most likely mode, log p0(x) decile) profile,
+                 which sees mode proportions and the typicality of the full
+                 joint configuration.
     """
     n, d = samples.shape
     S = site_marginals.shape[1]
@@ -54,17 +54,16 @@ def sample_kls(
             for i, j in pairs
         ]
     ).astype(np.float64)
-    profile_counts = np.bincount(
-        np.searchsorted(profile_edges, sample_log_prob, side="right"),
-        minlength=profile_probs.size,
-    ).astype(np.float64)
+    profile_counts = np.bincount(profile_cells, minlength=profile_probs.size).astype(
+        np.float64
+    )
     site_kl = _kl_rows(site_marginals, site_counts, n)
     pair_kl = _kl_rows(pair_marginals.reshape(len(pairs), S * S), pair_counts, n)
-    loglik_kl = _kl_rows(profile_probs, profile_counts, n)
+    profile_kl = _kl_rows(profile_probs, profile_counts, n)
     return {
         "site_kl": _clip(np.mean(site_kl)),
         "pair_kl": _clip(np.mean(pair_kl)),
-        "loglik_kl": _clip(loglik_kl),
+        "profile_kl": _clip(profile_kl),
     }
 
 
@@ -75,13 +74,13 @@ def pair_kl_floor(num_states: int, num_samples: int) -> float:
 
 def metric_names(budgets: list[int]) -> list[str]:
     names = [f"log10_pair_kl_nfe{b}" for b in budgets]
-    return names + ["log10_loglik_kl_mean", "log10_site_kl_mean", "convergence_order"]
+    return names + ["log10_profile_kl_mean", "log10_site_kl_mean", "convergence_order"]
 
 
 def failure_metrics(budgets: list[int]) -> dict[str, float]:
     worst = math.log10(FAIL_KL)
     metrics = {f"log10_pair_kl_nfe{b}": worst for b in budgets}
-    metrics["log10_loglik_kl_mean"] = worst
+    metrics["log10_profile_kl_mean"] = worst
     metrics["log10_site_kl_mean"] = worst
     metrics["convergence_order"] = ORDER_BOUNDS[0]
     return metrics
@@ -101,16 +100,16 @@ def aggregate(
     removing the first-order finite-sample floor (clipped at a tenth of it).
     """
     metrics: dict[str, float] = {}
-    log_excess, site_logs, loglik_logs = [], [], []
+    log_excess, site_logs, profile_logs = [], [], []
     for b in budgets:
         rows = [runs[(i, b)] for i in range(num_instances)]
         pair = np.array([r["pair_kl"] for r in rows])
         metrics[f"log10_pair_kl_nfe{b}"] = float(np.mean(np.log10(pair)))
         site_logs.extend(np.log10([r["site_kl"] for r in rows]).tolist())
-        loglik_logs.extend(np.log10([r["loglik_kl"] for r in rows]).tolist())
+        profile_logs.extend(np.log10([r["profile_kl"] for r in rows]).tolist())
         excess = np.maximum(pair - floor, 0.1 * floor)
         log_excess.append(float(np.mean(np.log(excess))))
-    metrics["log10_loglik_kl_mean"] = float(np.mean(loglik_logs))
+    metrics["log10_profile_kl_mean"] = float(np.mean(profile_logs))
     metrics["log10_site_kl_mean"] = float(np.mean(site_logs))
     slope = np.polyfit(np.log(np.asarray(budgets, dtype=np.float64)), log_excess, 1)[0]
     lo, hi = ORDER_BOUNDS

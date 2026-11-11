@@ -33,8 +33,8 @@ from eval.test.instances import (  # noqa: E402
     Oracle,
     exact_marginals,
     likelihood_profile,
-    log_prob,
     make_instance,
+    profile_cells,
     site_pairs,
 )
 from eval.test.metrics import (  # noqa: E402
@@ -47,10 +47,10 @@ from eval.test.metrics import (  # noqa: E402
 EXPERIMENT = "multisite_reverse_ctmc"
 SLICE = "test"
 INSTANCE_SEEDS = [886301457, 312977064, 640918223, 57731809]
-NFE_BUDGETS = [8, 16, 32, 64]
-NUM_SAMPLES = 50_000
-PROFILE_BINS = 50
-PROFILE_REFERENCE_SAMPLES = 1_000_000
+NFE_BUDGETS = [16, 32, 64, 128]
+NUM_SAMPLES = 20_000
+PROFILE_BINS = 10
+PROFILE_REFERENCE_SAMPLES = 500_000
 RUN_TIMEOUT_SECONDS = 1800.0
 SEED_BASE = 4_119_000
 
@@ -76,8 +76,7 @@ class Scorer:
             self.site,
             self.pair,
             self.pairs,
-            log_prob(self.inst, samples),
-            self.edges,
+            profile_cells(self.inst, samples, self.edges),
             self.probs,
         )
 
@@ -152,7 +151,7 @@ def evaluate_solver(file, name, instances, seed_offset=0, log=True):
             if log:
                 print(
                     f"[{SLICE}] {name} inst={i} nfe={budget}: pair_kl={kls['pair_kl']:.5g} "
-                    f"loglik_kl={kls['loglik_kl']:.5g} site_kl={kls['site_kl']:.5g} "
+                    f"profile_kl={kls['profile_kl']:.5g} site_kl={kls['site_kl']:.5g} "
                     f"used={info['nfe_used']} "
                     f"{info['seconds']}s",
                     file=sys.stderr,
