@@ -1,5 +1,5 @@
 action: submit
 gpus: 0
-test: true
+test: false
 milestone: core_claim
-notes: "Oracle exactness check + calibration of mixture-of-sparse-products family (d=48, K=8, factor concentration 0.05/0.1/0.3): KL vs NFE for reference, baselines, grid variants, Gibbs alternatives."
+notes: "Final hardened gym run: oracle check; reference/baselines on hidden test and train; failure-discovery demo; shortcuts, better/weaker variants, Gibbs alternatives, seed noise through hidden test; rank analysis; paper Fig.2 toy."
