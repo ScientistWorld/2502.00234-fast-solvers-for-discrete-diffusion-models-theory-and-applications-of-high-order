@@ -117,16 +117,18 @@ def brute_force(initial, grid, rng):
 
 
 def genuine_runs(kind):
-    rng = np.random.default_rng(12345)
+    seed = int(kind.rsplit('_', 1)[-1]) if '_seed_' in kind else 12345
+    samples = 1000000 if kind.endswith('_more_samples') else SAMPLES
+    rng = np.random.default_rng(seed)
     runs = []
     start = time.monotonic()
     for steps in STEPS:
-        initial = rng.integers(0, 15, size=SAMPLES)
+        initial = rng.integers(0, 15, size=samples)
         grid = np.linspace(0, 12, steps+1)
         if kind == 'better_jump_alignment':
             states = aligned_jump_sampler(initial, grid, rng)
             nfe = 2*steps
-        elif kind == 'better_exponential_midpoint':
+        elif kind.startswith('better_exponential_midpoint'):
             states = exponential_midpoint(initial, grid, rng)
             nfe = steps
         elif kind == 'shortcut_bruteforce':
@@ -139,11 +141,11 @@ def genuine_runs(kind):
         counts = np.bincount(states, minlength=15)
         run = artifact_run(steps, counts/counts.sum(), nfe)
         run['counts'] = counts.tolist()
-        run['samples'] = SAMPLES
+        run['samples'] = samples
         runs.append(run)
     return runs, {'actual_seconds': time.monotonic()-start,
-                  'state_space_size': 15, 'samples': SAMPLES,
-                  'global_matrix_evaluations_per_step': 1 if kind == 'better_exponential_midpoint' else 0}
+                  'state_space_size': 15, 'samples': samples, 'seed': seed,
+                  'global_matrix_evaluations_per_step': 1 if kind.startswith('better_exponential_midpoint') else 0}
 
 
 def main():
@@ -156,8 +158,7 @@ def main():
     runs = deepcopy(reference)
     meta = {'variant': name}
 
-    if name in ['better_jump_alignment', 'better_exponential_midpoint',
-                'weaker_no_second_stage', 'shortcut_bruteforce']:
+    if name in ['better_jump_alignment', 'weaker_no_second_stage', 'shortcut_bruteforce'] or name.startswith('better_exponential_midpoint'):
         runs, extra = genuine_runs(name)
         meta.update(extra)
     elif name == 'shortcut_visible_answers':

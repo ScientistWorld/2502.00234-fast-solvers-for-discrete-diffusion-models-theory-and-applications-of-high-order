@@ -41,14 +41,18 @@ def main():
     # This fixed cohort includes every successfully executed attempt, including
     # absent method results. Failed jobs are excluded from estimated SD.
     cohort = [name for name in vectors if statuses[name].get('test_exit') == 0]
-    scale = {}
-    for metric in metrics:
-        values = [float(ref[metric])] if metric in ref else []
-        values.extend(float(vectors[name][metric]) for name in cohort
-                      if isinstance(vectors[name].get(metric), (int, float))
-                      and math.isfinite(vectors[name][metric]))
-        sd = statistics.pstdev(values) if values else 0
-        scale[metric] = sd if sd > 0 else None
+    def scales_for(names):
+        scales = {}
+        for metric in metrics:
+            values = [float(ref[metric])] if metric in ref else []
+            values.extend(float(vectors[name][metric]) for name in names
+                          if isinstance(vectors[name].get(metric), (int, float))
+                          and math.isfinite(vectors[name][metric]))
+            sd = statistics.pstdev(values) if values else 0
+            scales[metric] = sd if sd > 0 else None
+        return scales
+
+    scale = scales_for(cohort)
 
     def rank(v, scales):
         contribution = {}
@@ -65,12 +69,7 @@ def main():
     # A separate quality-only cohort avoids shortcut extremes disguising the
     # sensitivity check. It uses exactly the same prescribed rank formula.
     quality = [name for name in cohort if name.startswith(('reference_', 'better_', 'weaker_'))]
-    quality_scale = {}
-    for metric in metrics:
-        values = [float(ref[metric])] if metric in ref else []
-        values += [float(vectors[n][metric]) for n in quality if metric in vectors[n]]
-        sd = statistics.pstdev(values) if values else 0
-        quality_scale[metric] = sd if sd > 0 else None
+    quality_scale = scales_for(quality)
 
     summary = {'reference_method': METHOD, 'reference_metrics': ref,
                'rank_formula': 'sum(weight * abs(coefficient) * direction * (attempt-reference) / population_sd)',
@@ -81,12 +80,19 @@ def main():
                'reference_metrics_at_mathematical_optimum': [], 'attempts': {}}
     for name, v in vectors.items():
         score, contributions = rank(v, scale)
-        qscore, qcontrib = rank(v, quality_scale)
+        # Every ranked shortcut must be included in its own normalization
+        # cohort as well; extrapolating a fixed quality-only SD would exaggerate
+        # unbounded metadata values and violate the requested ranking rule.
+        sensitivity_cohort = quality if name in quality else quality + [name]
+        sensitivity_scale = scales_for(sensitivity_cohort)
+        qscore, qcontrib = rank(v, sensitivity_scale)
         entry = {'test_exit': statuses[name].get('test_exit'),
                  'train_exit': statuses[name].get('train_exit'),
                  'score_delta': score, 'quality_cohort_score_delta': qscore,
                  'metrics': v, 'contributions': contributions,
                  'quality_cohort_contributions': qcontrib,
+                 'quality_sensitivity_cohort': ['original_reference']+sensitivity_cohort,
+                 'quality_sensitivity_population_sd': sensitivity_scale,
                  'scored_methods': sorted(results(read(BASE/name/'scores_test.json')))
                     if (BASE/name/'scores_test.json').exists() else [],
                  'absent_scored_metrics': sorted(set(metrics)-set(v))}
@@ -112,6 +118,12 @@ def main():
                                   'range': max(seed_scores)-min(seed_scores)}
     summary['quality_seed_score_spread'] = {'min': min(qscores), 'max': max(qscores),
                                           'range': max(qscores)-min(qscores)}
+    genuine_midpoints = [n for n in quality if n.startswith('better_exponential_midpoint')
+                         and not n.endswith('more_samples')]
+    midpoint_scores = [summary['attempts'][n]['quality_cohort_score_delta'] for n in genuine_midpoints]
+    summary['midpoint_quality_seed_score_spread'] = {
+        'min': min(midpoint_scores), 'max': max(midpoint_scores),
+        'range': max(midpoint_scores)-min(midpoint_scores)}
     # Same-budget comparison from observed sampler artifacts, without using a
     # second, non-ranking evaluator or calling the method again.
     paper_check = {}

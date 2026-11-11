@@ -21,6 +21,8 @@ EXPERIMENT = 'toy_15_state_convergence'
 VARIANTS = [
     'reference_seed_12345', 'reference_seed_12346', 'reference_seed_12347',
     'better_more_samples', 'better_jump_alignment', 'better_exponential_midpoint',
+    'better_exponential_midpoint_seed_12346', 'better_exponential_midpoint_seed_12347',
+    'better_exponential_midpoint_more_samples',
     'weaker_no_second_stage',
     'shortcut_visible_answers', 'shortcut_budget_metadata', 'shortcut_relabel_grid',
     'shortcut_method_selector', 'shortcut_empty_method', 'shortcut_replace_target',

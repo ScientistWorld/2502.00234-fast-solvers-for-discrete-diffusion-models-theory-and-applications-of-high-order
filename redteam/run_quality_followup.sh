@@ -1,0 +1,9 @@
+#!/bin/bash
+set -euo pipefail
+cd /home/user
+export PYTHONPATH="/home/user:${PYTHONPATH:-}"
+export PYTHONDONTWRITEBYTECODE=1
+python redteam/harness.py better_exponential_midpoint_seed_12346
+python redteam/harness.py better_exponential_midpoint_seed_12347
+python redteam/harness.py better_exponential_midpoint_more_samples
+python redteam/analyze.py

@@ -1,0 +1,7 @@
+{
+  "variant": "better_exponential_midpoint_more_samples",
+  "implementation": "../candidate.py",
+  "harness": "../harness.py",
+  "hidden_test": "bash scripts/evaluate_test.sh",
+  "hidden_test_args": []
+}
