@@ -1,0 +1,7 @@
+{
+  "variant": "better_jump_alignment",
+  "implementation": "../candidate.py",
+  "harness": "../harness.py",
+  "hidden_test": "bash scripts/evaluate_test.sh",
+  "hidden_test_args": []
+}

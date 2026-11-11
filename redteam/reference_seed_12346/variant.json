@@ -1,0 +1,7 @@
+{
+  "variant": "reference_seed_12346",
+  "implementation": "../candidate.py",
+  "harness": "../harness.py",
+  "hidden_test": "bash scripts/evaluate_test.sh",
+  "hidden_test_args": []
+}
