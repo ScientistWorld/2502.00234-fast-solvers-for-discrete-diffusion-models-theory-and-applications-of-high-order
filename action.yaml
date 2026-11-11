@@ -1,8 +1,5 @@
-# Once you set action to 'submit' or 'done', STOP immediately.
-# Do NOT sleep, poll, or wait for jobs. The system reads this file
-# only after your turn ends.
-action: pending
+action: submit
 gpus: 0
 test: false
 milestone: core_claim
-notes: ""
+notes: "Hardened gym full run: oracle exactness check; reference/baselines through hidden test and train; discovery/failure demo; shortcut, seed-noise and better/weaker variant attempts through hidden test; paper Fig.2 toy (unscored); rank analysis."
