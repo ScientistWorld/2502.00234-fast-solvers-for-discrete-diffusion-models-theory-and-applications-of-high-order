@@ -38,6 +38,34 @@
     "slice_state_subset_mass_abs_error_at_max_steps": -0.0,
     "max_nfe": -0.0
   },
+  "quality_sensitivity_cohort": [
+    "original_reference",
+    "better_exponential_midpoint",
+    "better_exponential_midpoint_more_samples",
+    "better_exponential_midpoint_seed_12346",
+    "better_exponential_midpoint_seed_12347",
+    "better_jump_alignment",
+    "better_more_samples",
+    "reference_seed_12345",
+    "reference_seed_12346",
+    "reference_seed_12347",
+    "weaker_no_second_stage"
+  ],
+  "quality_sensitivity_population_sd": {
+    "convergence_order": 0.5354302954564994,
+    "kl_at_max_steps": 0.002400216157385212,
+    "mean_kl": 0.009958502508877315,
+    "kl_at_common_nfe": null,
+    "total_variation_at_common_nfe": null,
+    "mean_total_variation": 0.023662178572888822,
+    "total_variation_at_max_steps": 0.011907766498106636,
+    "worst_state_abs_error_at_max_steps": 0.0036094041929141106,
+    "slice_state_subset_kl_at_max_steps": 0.00183015941112283,
+    "slice_state_subset_mass_abs_error_at_max_steps": 0.0025619227618773857,
+    "max_steps": null,
+    "max_nfe": 31.86749425484603,
+    "common_nfe": null
+  },
   "scored_methods": [
     "tau_leaping",
     "theta_rk2",

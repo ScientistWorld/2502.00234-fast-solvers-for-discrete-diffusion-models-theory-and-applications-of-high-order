@@ -1,0 +1,8 @@
+{
+  "variant": "better_exponential_midpoint_more_samples",
+  "actual_seconds": 12.27592377300607,
+  "state_space_size": 15,
+  "samples": 1000000,
+  "seed": 12345,
+  "global_matrix_evaluations_per_step": 1
+}

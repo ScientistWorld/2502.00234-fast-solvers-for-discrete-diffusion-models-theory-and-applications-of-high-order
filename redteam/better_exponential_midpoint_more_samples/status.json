@@ -1,0 +1,10 @@
+{
+  "variant": "better_exponential_midpoint_more_samples",
+  "test_invocation": "bash scripts/evaluate_test.sh",
+  "test_arguments": [],
+  "fresh_test_process": true,
+  "preparation_exit": 0,
+  "train_exit": 0,
+  "test_exit": 0,
+  "elapsed_seconds": 18.83819417700579
+}

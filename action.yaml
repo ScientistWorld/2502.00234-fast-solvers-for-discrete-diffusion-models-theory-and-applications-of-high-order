@@ -1,4 +1,4 @@
 action: submit
 gpus: 0
 test: false
-notes: "Bundled audit: three reference seeds, stronger and weaker solvers, full-state brute force, and 14 artifact/scoring shortcuts; preserve per-run hidden test scores."
+notes: "Audit follow-up: two additional seeds and original million-sample setting for genuine exponential-midpoint solver; recompute cohort-normalized ranks."

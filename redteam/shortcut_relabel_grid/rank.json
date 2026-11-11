@@ -1,8 +1,8 @@
 {
   "test_exit": 0,
   "train_exit": 0,
-  "score_delta": 5.603397829468708e-06,
-  "quality_cohort_score_delta": 6.121273572824004,
+  "score_delta": 6.0270903384190015e-06,
+  "quality_cohort_score_delta": 2.9854278021288345,
   "metrics": {
     "convergence_order": 4.723091824083938,
     "kl_at_max_steps": 0.0005137264376515751,
@@ -16,7 +16,7 @@
     "max_nfe": 128.0
   },
   "contributions": {
-    "convergence_order": 5.341459203891847e-06,
+    "convergence_order": 5.745345609842136e-06,
     "kl_at_max_steps": -0.0,
     "mean_kl": -0.0,
     "mean_total_variation": -0.0,
@@ -24,11 +24,11 @@
     "worst_state_abs_error_at_max_steps": -0.0,
     "slice_state_subset_kl_at_max_steps": -0.0,
     "slice_state_subset_mass_abs_error_at_max_steps": -0.0,
-    "max_steps": 2.619386255768616e-07,
+    "max_steps": 2.817447285768655e-07,
     "max_nfe": -0.0
   },
   "quality_cohort_contributions": {
-    "convergence_order": 6.121273572824004,
+    "convergence_order": 2.623614188635518,
     "kl_at_max_steps": -0.0,
     "mean_kl": -0.0,
     "mean_total_variation": -0.0,
@@ -36,7 +36,37 @@
     "worst_state_abs_error_at_max_steps": -0.0,
     "slice_state_subset_kl_at_max_steps": -0.0,
     "slice_state_subset_mass_abs_error_at_max_steps": -0.0,
+    "max_steps": 0.3618136134933163,
     "max_nfe": -0.0
+  },
+  "quality_sensitivity_cohort": [
+    "original_reference",
+    "better_exponential_midpoint",
+    "better_exponential_midpoint_more_samples",
+    "better_exponential_midpoint_seed_12346",
+    "better_exponential_midpoint_seed_12347",
+    "better_jump_alignment",
+    "better_more_samples",
+    "reference_seed_12345",
+    "reference_seed_12346",
+    "reference_seed_12347",
+    "weaker_no_second_stage",
+    "shortcut_relabel_grid"
+  ],
+  "quality_sensitivity_population_sd": {
+    "convergence_order": 0.9001117322323048,
+    "kl_at_max_steps": 0.0023060865666733764,
+    "mean_kl": 0.009536495925070238,
+    "kl_at_common_nfe": null,
+    "total_variation_at_common_nfe": null,
+    "mean_total_variation": 0.02265963458424613,
+    "total_variation_at_max_steps": 0.011439826439092254,
+    "worst_state_abs_error_at_max_steps": 0.0034659608913085475,
+    "slice_state_subset_kl_at_max_steps": 0.001759198450947877,
+    "slice_state_subset_mass_abs_error_at_max_steps": 0.0025246591895118397,
+    "max_steps": 16.583123951777,
+    "max_nfe": 31.55242550986462,
+    "common_nfe": null
   },
   "scored_methods": [
     "tau_leaping",

@@ -1,0 +1,10 @@
+{
+  "variant": "better_exponential_midpoint_seed_12347",
+  "test_invocation": "bash scripts/evaluate_test.sh",
+  "test_arguments": [],
+  "fresh_test_process": true,
+  "preparation_exit": 0,
+  "train_exit": 0,
+  "test_exit": 0,
+  "elapsed_seconds": 7.134727066993946
+}

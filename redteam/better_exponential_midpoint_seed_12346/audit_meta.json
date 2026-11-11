@@ -1,0 +1,8 @@
+{
+  "variant": "better_exponential_midpoint_seed_12346",
+  "actual_seconds": 0.6638976829999592,
+  "state_space_size": 15,
+  "samples": 50000,
+  "seed": 12346,
+  "global_matrix_evaluations_per_step": 1
+}
