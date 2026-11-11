@@ -2,12 +2,14 @@
   "experiments": {
     "multisite_reverse_ctmc": {
       "description": "Sampling the reverse CTMC of a uniform-noise discrete diffusion model on X = [15]^48 under a fixed budget of intensity evaluations (NFE). The evaluator owns analytic held-out data distributions (8 separated modes of unequal weight and sharpness), answers intensity requests exactly, counts NFE, and scores the returned samples against the exact target on site marginals, site-pair marginals and the (mode, log-likelihood) profile at budgets of 16, 32, 64 and 128 NFE, i.e. fewer evaluations than sites.",
-      "notes": "Scaled extension of the paper's Section 6.1 / Appendix D.1 analytic toy (15 states per site, Q = E/15 - I per site, T = 12, arithmetic time grid, theta = 1/2, exact scores) from one site to 48 sites, in the paper's matched-NFE, NFE-below-sequence-length regime (Sections 6.2-6.4). With one site a single intensity call reveals the whole target and the 15-state space can be enumerated, so the one-site toy cannot rank samplers; with 48 sites the joint space (15^48) cannot be enumerated, and the separated, unequally weighted modes make Markov-chain sampling on the data-end conditionals fail. The paper reports Figure 2 slopes on the one-site toy over 16-1024 steps with 10^6 samples (theta-Trapezoidal 1.937, theta-RK-2 1.543, last four points 1.819); the gym's convergence_order is a pre-asymptotic fit over NFE 16-128 on multi-site pair marginals and is not on that scale, so those slopes are kept under _paper_reported. The convergence_order entries in results record the paper's stated approximately second-order claim and are unchanged from earlier iterations.",
+      "notes": "Scaled extension of the paper's Section 6.1 / Appendix D.1 analytic toy (15 states per site, Q = E/15 - I per site, T = 12, arithmetic time grid, theta = 1/2, exact scores) from one site to 48 sites, in the paper's matched-NFE, NFE-below-sequence-length regime (Sections 6.2-6.4). With one site a single intensity call reveals the whole target and the 15-state space can be enumerated, so the one-site toy cannot rank samplers; with 48 sites the joint space (15^48) cannot be enumerated, and the separated, unequally weighted modes make Markov-chain sampling on the data-end conditionals fail. The paper reports Figure 2 slopes on the one-site toy over 16-1024 steps with 10^6 samples (theta-Trapezoidal 1.937, theta-RK-2 1.543, last four points 1.819); the gym's convergence_order is a pre-asymptotic fit over NFE 16-128 on multi-site pair marginals and is not on that scale, so those slopes are kept under _paper_reported. The convergence_order entry for theta_trapezoidal records the paper's stated approximately second-order claim (Theorem 5.4) and is unchanged from earlier iterations; theta-RK-2 is a comparison baseline here and its earlier entry is kept under _paper_reported.",
       "_paper_reported": {
         "figure2_slope_theta_trapezoidal": 1.937,
         "figure2_slope_theta_rk2": 1.543,
         "figure2_slope_theta_rk2_last_four_points": 1.819,
-        "setting": "one 15-state site, target uniform on the simplex, 10^6 samples, steps 16-1024, KL(p0 || q_hat)"
+        "setting": "one 15-state site, target uniform on the simplex, 10^6 samples, steps 16-1024, KL(p0 || q_hat)",
+        "earlier_results_entry_theta_rk2_convergence_order": 2.0,
+        "theta_rk2_role": "theta-RK-2 is the paper's warm-up scheme (Sec. 4.1) and is shown to be inferior to theta-Trapezoidal; in this gym it is scored as a comparison baseline. Its earlier results entry (2.0) is kept here unchanged; the paper's own Figure 2 slope for it is 1.543 (1.819 on the last four points) on the one-site toy."
       },
       "weight": 1.0,
       "primary_metric": "convergence_order",
@@ -53,8 +55,7 @@
           "type": "baseline"
         },
         "theta_rk2": {
-          "type": "proposed",
-          "convergence_order": 2.0
+          "type": "baseline"
         },
         "theta_trapezoidal": {
           "type": "proposed",

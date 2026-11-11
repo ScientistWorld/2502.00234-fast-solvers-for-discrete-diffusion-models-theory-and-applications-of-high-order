@@ -194,7 +194,7 @@ There is one experiment, with weight 1.0. The metric coefficients are:
 
 ## Things not fixed
 
-- **`validate.py --post-design` fails only its paper-consistency check, for θ-RK-2.** `reference.json` keeps the earlier iterations' `convergence_order: 2.0` for both proposed methods, unchanged as instructed. The gym measures 0.84 for θ-RK-2, a pre-asymptotic multi-site slope over 16–128 NFE that is not on the paper's scale. The paper's own Fig. 2 slopes are recorded under `_paper_reported`. I did not change the setup or the numbers to pass. `python validate.py` (default mode) passes.
+- **θ-RK-2 is now a comparison baseline in `reference.json`.** The earlier iterations' results entry gave θ-RK-2 `convergence_order: 2.0`. The paper does not report that value: its Fig. 2 slope for RK-2 is 1.543, and the gym's multi-site pre-asymptotic order (0.84) is on neither scale. The instructions say off-scale paper numbers go under `_` keys and that the setup must not be changed to match them. So that entry is kept unchanged under `_paper_reported`, next to the paper's slopes, and θ-RK-2, the paper's warm-up scheme, is scored as a comparison baseline. θ-Trapezoidal keeps the paper's second-order claim (2.0) against a measured 1.42. `python validate.py` passes in default, `--post-design`, `--post-reproducer` and `--compare` modes.
 - **The soft "eval looks detached" warning remains.** The evaluators deliberately run no-training solvers, so validate's soft heuristic flags them.
 - **Remaining departures from the paper's toy.**
   - Sample size: 10,000 per (instance, budget) rather than 10⁶, because of a 1-CPU budget.
