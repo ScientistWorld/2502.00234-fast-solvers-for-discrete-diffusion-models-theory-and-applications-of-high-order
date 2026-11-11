@@ -2,4 +2,4 @@ action: submit
 gpus: 0
 test: true
 milestone: core_claim
-notes: "Calibrate target transition sparsity (0.1/0.2/0.4): KL vs NFE for reference, baselines, grid variants and data-end Gibbs alternatives."
+notes: "Oracle exactness check + calibration of mixture-of-sparse-products family (d=48, K=8, factor concentration 0.05/0.1/0.3): KL vs NFE for reference, baselines, grid variants, Gibbs alternatives."
