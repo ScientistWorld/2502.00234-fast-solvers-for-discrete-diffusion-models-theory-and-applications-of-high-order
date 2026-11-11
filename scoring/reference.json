@@ -1,8 +1,8 @@
 {
   "experiments": {
     "multisite_reverse_ctmc": {
-      "description": "Sampling the reverse CTMC of a uniform-noise discrete diffusion model on X = [15]^10 under a fixed budget of intensity evaluations (NFE). The evaluator owns analytic held-out data distributions, answers intensity requests exactly, counts NFE, and scores the returned samples against the exact target on site marginals, site-pair marginals and the exact log-likelihood profile, at budgets 8, 16, 32 and 64 NFE.",
-      "notes": "Scaled extension of the paper's Section 6.1 / Appendix D.1 analytic toy (15 states per site, Q = E/15 - I per site, T = 12, arithmetic time grid, theta = 1/2, targets drawn uniformly from the simplex) from one site to ten sites, so that the joint state space (15^10) cannot be enumerated and a single intensity call no longer reveals the whole target. The paper's matched-NFE comparison (Sections 6.2-6.4) is the scoring regime. The paper reports Figure 2 slopes on the one-site toy over 16-1024 steps with 10^6 samples (theta-Trapezoidal 1.937, theta-RK-2 1.543, last four points 1.819); the gym's convergence_order is a pre-asymptotic fit over NFE 8-64 on multi-site pair marginals and is not on that scale, so those slopes are kept under _paper_reported. The convergence_order entries below record the paper's stated approximately second-order claim and are unchanged from earlier iterations.",
+      "description": "Sampling the reverse CTMC of a uniform-noise discrete diffusion model on X = [15]^48 under a fixed budget of intensity evaluations (NFE). The evaluator owns analytic held-out data distributions (8 separated modes of unequal weight and sharpness), answers intensity requests exactly, counts NFE, and scores the returned samples against the exact target on site marginals, site-pair marginals and the (mode, log-likelihood) profile at budgets of 16, 32, 64 and 128 NFE, i.e. fewer evaluations than sites.",
+      "notes": "Scaled extension of the paper's Section 6.1 / Appendix D.1 analytic toy (15 states per site, Q = E/15 - I per site, T = 12, arithmetic time grid, theta = 1/2, exact scores) from one site to 48 sites, in the paper's matched-NFE, NFE-below-sequence-length regime (Sections 6.2-6.4). With one site a single intensity call reveals the whole target and the 15-state space can be enumerated, so the one-site toy cannot rank samplers; with 48 sites the joint space (15^48) cannot be enumerated, and the separated, unequally weighted modes make Markov-chain sampling on the data-end conditionals fail. The paper reports Figure 2 slopes on the one-site toy over 16-1024 steps with 10^6 samples (theta-Trapezoidal 1.937, theta-RK-2 1.543, last four points 1.819); the gym's convergence_order is a pre-asymptotic fit over NFE 16-128 on multi-site pair marginals and is not on that scale, so those slopes are kept under _paper_reported. The convergence_order entries in results record the paper's stated approximately second-order claim and are unchanged from earlier iterations.",
       "_paper_reported": {
         "figure2_slope_theta_trapezoidal": 1.937,
         "figure2_slope_theta_rk2": 1.543,
@@ -12,30 +12,30 @@
       "weight": 1.0,
       "primary_metric": "convergence_order",
       "metrics": {
-        "log10_pair_kl_nfe8": {
-          "higher_is_better": false,
-          "coefficient": -0.75,
-          "description": "log10 of the mean over all 45 site pairs of KL(p0 || q_hat) on the 225-cell pair marginal, geometric mean over held-out instances, at 8 intensity evaluations per sample."
-        },
         "log10_pair_kl_nfe16": {
           "higher_is_better": false,
           "coefficient": -0.75,
-          "description": "As log10_pair_kl_nfe8, at 16 intensity evaluations per sample."
+          "description": "log10 of the mean over all 1128 site pairs of KL(p0 || q_hat) on the 225-cell pair marginal, geometric mean over held-out instances, at 16 intensity evaluations per sample."
         },
         "log10_pair_kl_nfe32": {
           "higher_is_better": false,
           "coefficient": -0.75,
-          "description": "As log10_pair_kl_nfe8, at 32 intensity evaluations per sample."
+          "description": "log10 of the mean over all 1128 site pairs of KL(p0 || q_hat) on the 225-cell pair marginal, geometric mean over held-out instances, at 32 intensity evaluations per sample."
         },
         "log10_pair_kl_nfe64": {
           "higher_is_better": false,
           "coefficient": -0.75,
-          "description": "As log10_pair_kl_nfe8, at 64 intensity evaluations per sample."
+          "description": "log10 of the mean over all 1128 site pairs of KL(p0 || q_hat) on the 225-cell pair marginal, geometric mean over held-out instances, at 64 intensity evaluations per sample."
         },
-        "log10_loglik_kl_mean": {
+        "log10_pair_kl_nfe128": {
+          "higher_is_better": false,
+          "coefficient": -0.75,
+          "description": "log10 of the mean over all 1128 site pairs of KL(p0 || q_hat) on the 225-cell pair marginal, geometric mean over held-out instances, at 128 intensity evaluations per sample."
+        },
+        "log10_profile_kl_mean": {
           "higher_is_better": false,
           "coefficient": -1.0,
-          "description": "log10 of KL(p0 || q_hat) on 50 equal-mass bins of the exact data log-likelihood log p0(x), averaged over instances and budgets. Sensitive to errors in the full joint configuration that pair marginals can miss."
+          "description": "log10 of KL(p0 || q_hat) on the joint profile (most likely mode, decile of the exact log p0(x)), 80 cells, averaged over instances and budgets. Sees mode proportions and the typicality of the whole 48-site configuration, which pair marginals can miss."
         },
         "log10_site_kl_mean": {
           "higher_is_better": false,
@@ -45,7 +45,7 @@
         "convergence_order": {
           "higher_is_better": true,
           "coefficient": 0.5,
-          "description": "Negative log-log slope of the instance-geometric-mean pair KL against NFE (8-64), after removing the first-order finite-sample floor (224 / 2n)."
+          "description": "Negative log-log slope of the instance-geometric-mean pair KL against NFE (16-128), after removing the first-order finite-sample floor (224 / 2n)."
         }
       },
       "results": {

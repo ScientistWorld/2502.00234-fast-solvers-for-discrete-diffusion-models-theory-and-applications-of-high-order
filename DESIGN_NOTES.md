@@ -1,3 +1,5 @@
+> Historical: this file describes the pre-hardening one-site artifact gym (iterations 1-10). The current gym is documented in `HARDENING.md`, `briefing/` and `scoring/`.
+
 # Train/Test Evaluation Design Notes
 
 ## Checked

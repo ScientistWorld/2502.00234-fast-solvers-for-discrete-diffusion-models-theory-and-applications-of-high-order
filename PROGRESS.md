@@ -76,3 +76,18 @@ tau-leaping at matched NFE in this reduced-sample run.
 - The toy experiment sample count is reduced from 1,000,000 to 50,000 to fit
   the available one-CPU, one-hour job limit. The sampling procedure itself is
   unchanged.
+
+## Iteration 11 (hardening) — current state
+
+The sections above describe the pre-hardening one-site gym and are kept for
+history.  The current gym is described in `briefing/`, `scoring/` and
+`HARDENING.md`:
+
+- Hidden test scores (`scoring/scores_test.json`, log10 pair KL at
+  16/32/64/128 NFE; profile; site; order):
+  theta-Trapezoidal 0.061/-0.303/-0.726/-1.145; 0.621; -1.112; 1.419.
+  tau-leaping 0.109/-0.191/-0.587/-0.988; 0.664; -0.943; 1.275.
+  theta-RK-2 0.239/0.126/-0.141/-0.499; 0.778; -0.572; 0.838.
+- Remaining open items: identification of the target from intensity queries
+  (out of scope by DIRECTION, not closed), reading eval/test at run time, and
+  the paper's GPU-scale text/image/LLM experiments (not reproduced).

@@ -1,12 +1,18 @@
 # Constraints
 
-Use the same 15-state analytic CTMC, target distribution, horizon `T = 12`, and
-uniform time grids unless explicitly adding a separately named experiment.
-Evaluation must read method artifacts rather than rerunning a sampler.
-Report both the step count and NFE budget so faster apparent convergence is not
-achieved by hiding extra score/intensity evaluations.  Matched-compute claims
-must use `common_nfe`, the largest NFE value present for every scored method,
-rather than comparing only the largest saved step count.
-
-Future methods may change the solver but must report the same output JSON
-format under `outputs/toy/` so `scripts/evaluate.sh` can score them.
+- The problem is fixed by the evaluators: 48 sites with 15 states, the
+  uniform-rate forward noise per site, horizon `T = 12`, uniform initial
+  states, held-out data distributions, 10,000 samples, and NFE budgets
+  16/32/64/128.  Methods cannot change any of these.
+- The only access to an instance is `problem.rates(states, s)`.  Each request
+  of `m` rows costs `ceil(m / num_samples)` evaluations; the evaluator refuses
+  requests beyond `nfe_budget`, times outside `[0, T]`, invalid states, or more
+  than `4 * num_samples` rows, and the run then fails.
+- Solvers must return `(num_samples, num_sites)` integer states in
+  `[0, num_states)` within 30 minutes per run.  A failed run on any instance or
+  budget gives the method the worst value of every scored metric.
+- All scored numbers are computed by the evaluator from the returned samples.
+  Files written by a method are not read; score files are deleted and
+  regenerated atomically on every evaluation.
+- Every registry under `method/` and `baseline/` (top-level `SOLVERS` dict) is
+  scored; methods cannot opt out by editing other files.

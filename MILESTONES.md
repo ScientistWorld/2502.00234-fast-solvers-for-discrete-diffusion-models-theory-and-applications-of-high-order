@@ -46,3 +46,9 @@
 - Final verification kept the milestone at `core_claim`.
 - Removed method-specific self-reported diagnostics from the scored metric schema and evaluator outputs.
 - Confirmed `python validate.py --compare` passes with method-independent distribution and compute-budget metrics.
+
+### [2026-11-11] - core_claim (iteration 11, hardening)
+- Rebuilt the gym so the hidden test runs every registered solver itself on held-out multi-site analytic targets (15 states x 48 sites, 8 modes of unequal weight and sharpness), with exact intensities, evaluator-counted NFE at budgets 16/32/64/128, worst values for any failure, and scores computed only from returned samples.
+- Restored the paper's per-jump (nu) combination of the two stages in theta-RK-2 and theta-Trapezoidal.
+- Hidden test: theta-Trapezoidal beats tau-leaping (dR -0.95) and theta-RK-2 (dR -3.63) at every matched budget; better time grids beat it by +8.2/+9.2 against a 0.02 seed spread; every shortcut, exact simulation and data-end Gibbs score below it.
+- One-site paper toy (unscored): slopes 1.77 (Trapezoidal) and 1.38 (RK-2) vs the paper's 1.937 and 1.543. Details in HARDENING.md.
