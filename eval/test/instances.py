@@ -3,9 +3,12 @@
 State space X = [S]^d (d sites, S states per site).  Each site is noised
 independently by the uniform-rate CTMC Q = E / S - I of the paper's toy model,
 run for horizon T = 12.  The data distribution p0 is a mixture of K product
-distributions ("modes") with Dirichlet(1) mixture weights; each mode's
-per-site factor is drawn from a sparse Dirichlet, so the modes are separated,
-unequally weighted clusters of sequences.  Forward marginals stay mixtures of
+distributions ("modes").  Mode k draws its per-site factors from a Dirichlet
+with its own concentration (log-spaced from very sharp to broad), mixed with a
+1% uniform floor; Dirichlet(1) mixture weights are assigned so that sharper
+modes carry more mass.  The modes are therefore separated, unequally weighted
+and unequally spread, as in real data, and the mass a sampler assigns to each
+mode is part of what is scored.  Forward marginals stay mixtures of
 products, p_t = sum_k w_k prod_i (c_t + e_t pi_{k,i}), with e_t = exp(-t) and
 c_t = (1 - e_t) / S, so the exact reverse-process jump intensities are
 available in closed form.
@@ -26,9 +29,9 @@ NUM_STATES = 15
 NUM_SITES = 48
 HORIZON = 12.0
 NUM_COMPONENTS = 8
-FACTOR_CONCENTRATION = 0.1
+CONCENTRATION_RANGE = (0.02, 2.0)
+FACTOR_FLOOR = 0.01
 MIXTURE_CONCENTRATION = 1.0
-PROBABILITY_FLOOR = 1e-12
 WEIGHT_FLOOR = 1e-3
 
 
@@ -47,15 +50,25 @@ def make_instance(
     num_states: int = NUM_STATES,
     num_components: int = NUM_COMPONENTS,
     horizon: float = HORIZON,
-    factor_concentration: float = FACTOR_CONCENTRATION,
+    concentration_range: tuple[float, float] = CONCENTRATION_RANGE,
+    factor_floor: float = FACTOR_FLOOR,
 ) -> Instance:
     rng = np.random.default_rng(seed)
     K, d, S = num_components, num_sites, num_states
-    weights = rng.dirichlet(np.full(K, MIXTURE_CONCENTRATION)) + WEIGHT_FLOOR
-    weights = weights / weights.sum()
-    factors = rng.dirichlet(np.full(S, factor_concentration), size=(K, d)) + PROBABILITY_FLOOR
+    alphas = np.geomspace(concentration_range[0], concentration_range[1], K)
+    weights = np.sort(rng.dirichlet(np.full(K, MIXTURE_CONCENTRATION)))[::-1] + WEIGHT_FLOOR
+    weights = weights / weights.sum()  # sharpest mode first, largest weight first
+    factors = np.empty((K, d, S))
+    for k, alpha in enumerate(alphas):
+        rows = rng.dirichlet(np.full(S, alpha), size=d)
+        bad = ~np.isfinite(rows).all(axis=-1) | (rows.sum(axis=-1) <= 0)
+        if np.any(bad):  # all-underflow draws at tiny concentration: a vertex
+            rows[bad] = np.eye(S)[rng.integers(0, S, size=int(bad.sum()))]
+        factors[k] = rows / rows.sum(axis=-1, keepdims=True)
+    factors = (1.0 - factor_floor) * factors + factor_floor / S
     factors = factors / factors.sum(axis=-1, keepdims=True)
-    return Instance(weights, factors, S, d, float(horizon))
+    perm = rng.permutation(K)
+    return Instance(weights[perm], factors[perm], S, d, float(horizon))
 
 
 class Oracle:
