@@ -3,8 +3,10 @@
 State space X = [S]^d (d sites, S states per site).  Each site is noised
 independently by the uniform-rate CTMC Q = E / S - I of the paper's toy model,
 run for horizon T = 12.  The data distribution p0 is a mixture of K Markov
-chains; every component visits the sites in its own random order, and its
-initial distribution and transition rows are drawn uniformly from the simplex.
+chains with Dirichlet(1) mixture weights; every component visits the sites in
+its own random order, its initial distribution is drawn uniformly from the
+simplex and its transition rows from a sparse Dirichlet, so that the
+components are separated, unequally weighted modes.
 The forward marginals p_t stay mixtures of hidden Markov models, so the exact
 reverse-process jump intensities are available in closed form through
 forward-backward recursions.
@@ -25,8 +27,10 @@ NUM_STATES = 15
 NUM_SITES = 10
 HORIZON = 12.0
 NUM_COMPONENTS = 3
-SIMPLEX_CONCENTRATION = 1.0
-MIXTURE_CONCENTRATION = 2.0
+INITIAL_CONCENTRATION = 1.0
+TRANSITION_CONCENTRATION = 0.2
+MIXTURE_CONCENTRATION = 1.0
+PROBABILITY_FLOOR = 1e-12
 
 
 @dataclass(frozen=True)
@@ -46,15 +50,20 @@ def make_instance(
     num_states: int = NUM_STATES,
     num_components: int = NUM_COMPONENTS,
     horizon: float = HORIZON,
+    transition_concentration: float = TRANSITION_CONCENTRATION,
 ) -> Instance:
     rng = np.random.default_rng(seed)
     K, d, S = num_components, num_sites, num_states
+
+    def simplex(alpha: float, size) -> np.ndarray:
+        p = rng.dirichlet(np.full(S, alpha), size=size) + PROBABILITY_FLOOR
+        return p / p.sum(axis=-1, keepdims=True)
+
     weights = rng.dirichlet(np.full(K, MIXTURE_CONCENTRATION))
+    weights = (weights + 1e-3) / (weights + 1e-3).sum()
     orders = np.stack([rng.permutation(d) for _ in range(K)]).astype(np.int64)
-    initial = rng.dirichlet(np.full(S, SIMPLEX_CONCENTRATION), size=K)
-    transitions = rng.dirichlet(
-        np.full(S, SIMPLEX_CONCENTRATION), size=(K, max(d - 1, 0), S)
-    )
+    initial = simplex(INITIAL_CONCENTRATION, K)
+    transitions = simplex(transition_concentration, (K, max(d - 1, 0), S))
     return Instance(weights, orders, initial, transitions, S, d, float(horizon))
 
 
@@ -105,7 +114,7 @@ class Oracle:
             pb *= decay
             pb += floor * total
             neighbours[order] += inst.weights[k] * pb
-        neighbours /= S * prob[:, None]
+        neighbours /= S * np.maximum(prob, 1e-300)[:, None]
         neighbours[onehot] = 0.0
         return np.ascontiguousarray(np.moveaxis(neighbours, 0, 1))
 
